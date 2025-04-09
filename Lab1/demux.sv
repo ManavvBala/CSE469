@@ -1,44 +1,13 @@
 module demux (
-    input logic in;
-    input logic[4:0] sel;
-    output logic[30:0] out;
+    input logic in,
+    input logic[4:0] sel,
+    output logic[30:0] out
 );
 
-    // cases or just assign
-    always_comb
-        case (sel)
-            5'd0: 31'd1;
-            5'd1: 31'd2;
-            5'd2: 31'd4;
-            5'd3: 31'd8;
-            5'd4: 31'd16;
-            5'd5: 31'd32;
-            5'd6: 31'd64;
-            5'd7: 31'd128;
-            5'd8: 31'd256;
-            5'd9: 31'd512;
-            5'd10: 31'd1024;
-            5'd11: 31'd2048;
-            5'd12: 31'd4096;
-            5'd13: 31'd8192;
-            5'd14: 31'd16384;
-            5'd15: 31'd32768;
-            5'd16: 31'd65536;
-            5'd17: 31'd131072;
-            5'd18: 31'd262144;
-            5'd19: 31'd524288;
-            5'd20: 31'd1048576;
-            5'd21: 31'd2097152;
-            5'd22: 31'd4194304;
-            5'd23: 31'd8388608;
-            5'd24: 31'd16777216;
-            5'd25: 31'd33554432;
-            5'd26: 31'd67108864;
-            5'd27: 31'd134217728;
-            5'd28: 31'd268435456;
-            5'd29: 31'd536870912;
-            5'd30: 31'd1073741824;
-            default: 31'b0;
-        endcase
+always_comb begin
+    out = 31'b0;          
+    if (sel < 31)         
+        out[sel] = in;
+end
 
 endmodule
