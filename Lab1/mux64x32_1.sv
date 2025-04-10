@@ -11,3 +11,5 @@ generate
         mux32_1 mux(.in(in[i]),.sel(sel),.out(out[i]));
     end
 endgenerate
+
+endmodule
