@@ -1,5 +1,5 @@
 module mux64x32_1 (
-    input logic[63:0][31:0] in,
+    input logic[63:0] in [31:0],
     input logic[4:0] sel,
     output logic[63:0] out
 );

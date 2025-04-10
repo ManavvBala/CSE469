@@ -1,5 +1,5 @@
 module register #(parameter WIDTH = 64)(
-    input logic clk, reset,
+    input logic clk,
     input logic[WIDTH-1:0] DataIn,
     input logic WriteEnable,
     output logic[WIDTH-1:0] DataOut,
@@ -9,7 +9,7 @@ module register #(parameter WIDTH = 64)(
 genvar i;
 generate
     for (i = 0; i < WIDTH; i++) begin : genDFF
-        DFF newDFF (.q(DataIn[i]), .d(DataOut[i]), .clk(clock), .*)
+        DFF_enable newDFF (.q(DataIn[i]), .d(DataOut[i]), .reset(0), .clk, .enable(WriteEnable));
     end
 endgenerate
 
