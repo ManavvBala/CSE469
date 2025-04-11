@@ -1,6 +1,6 @@
 module DFF_enable (
-    output logic q;
-    input logic d, reset, clk, enable;
+    output logic q,
+    input logic d, reset, clk, enable
 );
     logic temp_q, temp_d;
     // instantiate dff to hold state
@@ -10,4 +10,4 @@ module DFF_enable (
 
     assign q = temp_q;
 
-endmodule
+endmodule 

@@ -1,3 +1,4 @@
+`timescale 1ns/10ps
 module demux1_2 (
     input logic in,
     input logic sel,
