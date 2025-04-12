@@ -1,5 +1,5 @@
 Analysis & Synthesis report for DE1_SoC
-Wed Apr 09 22:48:51 2025
+Thu Apr 10 23:49:20 2025
 Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 
 
@@ -45,7 +45,7 @@ agreement for further details.
 +-------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                  ;
 +---------------------------------+---------------------------------------------+
-; Analysis & Synthesis Status     ; Successful - Wed Apr 09 22:48:51 2025       ;
+; Analysis & Synthesis Status     ; Successful - Thu Apr 10 23:49:20 2025       ;
 ; Quartus Prime Version           ; 17.0.0 Build 595 04/25/2017 SJ Lite Edition ;
 ; Revision Name                   ; DE1_SoC                                     ;
 ; Top-level Entity Name           ; mux64x32_1                                  ;
@@ -161,7 +161,7 @@ agreement for further details.
 ; Maximum allowed            ; 16          ;
 ;                            ;             ;
 ; Average used               ; 1.00        ;
-; Maximum used               ; 9           ;
+; Maximum used               ; 11          ;
 ;                            ;             ;
 ; Usage by Processor         ; % Time Used ;
 ;     Processor 1            ; 100.0%      ;
@@ -173,6 +173,8 @@ agreement for further details.
 ;     Processor 7            ;   0.0%      ;
 ;     Processor 8            ;   0.0%      ;
 ;     Processor 9            ;   0.0%      ;
+;     Processor 10           ;   0.0%      ;
+;     Processor 11           ;   0.0%      ;
 +----------------------------+-------------+
 
 
@@ -410,13 +412,13 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
-    Info: Processing started: Wed Apr 09 22:48:22 2025
+    Info: Processing started: Thu Apr 10 23:48:51 2025
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off DE1_SoC -c DE1_SoC
 Info (20030): Parallel compilation is enabled and will use 16 of the 16 processors detected
 Info (12021): Found 1 design units, including 1 entities, in source file demux1_2.sv
-    Info (12023): Found entity 1: demux1_2 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab1/demux1_2.sv Line: 1
+    Info (12023): Found entity 1: demux1_2 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab1/demux1_2.sv Line: 2
 Info (12021): Found 1 design units, including 1 entities, in source file demux2_4.sv
-    Info (12023): Found entity 1: demux2_4 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab1/demux2_4.sv Line: 1
+    Info (12023): Found entity 1: demux2_4 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab1/demux2_4.sv Line: 2
 Info (12021): Found 1 design units, including 1 entities, in source file demux3_8.sv
     Info (12023): Found entity 1: demux3_8 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab1/demux3_8.sv Line: 1
 Info (12021): Found 1 design units, including 1 entities, in source file demux5_32.sv
@@ -439,7 +441,6 @@ Info (12021): Found 1 design units, including 1 entities, in source file registe
     Info (12023): Found entity 1: register File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab1/register.sv Line: 1
 Info (12021): Found 1 design units, including 1 entities, in source file mux2_1.sv
     Info (12023): Found entity 1: mux2_1 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab1/mux2_1.sv Line: 1
-Critical Warning (10846): Verilog HDL Instantiation warning at regfile.sv(10): instance has no name File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab1/regfile.sv Line: 10
 Info (12127): Elaborating entity "mux64x32_1" for the top level hierarchy
 Info (12128): Elaborating entity "mux32_1" for hierarchy "mux32_1:each_mux[0].mux1" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab1/mux64x32_1.sv Line: 18
 Info (12128): Elaborating entity "mux16_1" for hierarchy "mux32_1:each_mux[0].mux1|mux16_1:m0" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab1/mux32_1.sv Line: 10
@@ -453,9 +454,9 @@ Info (21057): Implemented 2822 device resources after synthesis - the final reso
     Info (21058): Implemented 2053 input pins
     Info (21059): Implemented 64 output pins
     Info (21061): Implemented 705 logic cells
-Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 1 warning
-    Info: Peak virtual memory: 4909 megabytes
-    Info: Processing ended: Wed Apr 09 22:48:51 2025
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 0 warnings
+    Info: Peak virtual memory: 4900 megabytes
+    Info: Processing ended: Thu Apr 10 23:49:20 2025
     Info: Elapsed time: 00:00:29
     Info: Total CPU time (on all processors): 00:00:35
 
