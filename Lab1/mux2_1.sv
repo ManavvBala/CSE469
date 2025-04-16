@@ -11,8 +11,8 @@ module mux2_1 (
     and (#50ps) AND_1 (and_results[1], sel, d[1]);
     
     // need to hold ~sel
-    logic not_sel
-    not (#50ps) NOT1 (not_sel, sel)
+    logic not_sel;
+    not (#50ps) NOT1 (not_sel, sel);
     and (#50ps) AND_0 (and_results[0], not_sel, d[0]);
 
     // out
