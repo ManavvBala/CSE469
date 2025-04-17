@@ -20,6 +20,6 @@ module alu_1bit (
 
 
     //Control routing
-	mux8_1 m3 (.in({1'b0, result[2:0], result[3], result[3], 1'b0, b}), .sel(control), .out);
+	mux8_1 m3 (.in({1'b0, res[2:0], res[3], res[3], 1'b0, b}), .sel(control), .out);
 
 endmodule
