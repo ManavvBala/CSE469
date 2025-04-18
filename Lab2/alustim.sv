@@ -52,5 +52,43 @@ module alustim();
 		#(delay);
 		assert(result == 64'h0000000000000002 && carry_out == 0 && overflow == 0 && negative == 0 && zero == 0);
 		
+		// custom testing code
+		$display("%t testing addition", $time);
+		cntrl = ALU_ADD;
+		A = 64'd 9223372036854775000; B = 64'd1000000;
+		#(delay);
+		assert(result == 64'h0000000000000002 && carry_out == 0 && overflow == 0 && negative == 0 && zero == 0);
+		
+		$display("%t testing subtraction", $time);
+		cntrl = ALU_SUBTRACT;
+		A = 64'd400; B = 64'd500;
+		#(delay);
+		assert(result == 64'd369 && carry_out == 0 && overflow == 0 && negative == 0 && zero == 0);
+		
+		$display("%t testing AND", $time);
+		cntrl = ALU_AND;
+		A = 64'b11111111; B = 64'b10000001;
+		#(delay);
+		assert(result == 64'b10000001 && carry_out == 0 && overflow == 0 && negative == 0 && zero == 0);
+		
+		$display("%t testing OR", $time);
+		cntrl = ALU_OR;
+		A = 64'b00010001; B = 64'b00001111;
+		#(delay);
+		assert(result == 64'b00011111 && carry_out == 0 && overflow == 0 && negative == 0 && zero == 0);
+		
+		$display("%t testing XOR", $time);
+		cntrl = ALU_XOR;
+		A = 64'b00001111; B = 64'b00001001;
+		#(delay);
+		assert(result == 64'b00000110 && carry_out == 0 && overflow == 0 && negative == 0 && zero == 0);
+		
+		// test zero
+		$display("%t testing ZERO", $time);
+		cntrl = ALU_PASS_B;
+		A = 64'b00001111; B = 64'b0;
+		#(delay);
+		assert(result == 64'b0 && carry_out == 0 && overflow == 0 && negative == 0 && zero == 1);
+		
 	end
 endmodule

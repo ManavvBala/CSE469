@@ -1,4 +1,3 @@
-`timescale 1ns/10ps
 module isZero (
     input logic [63:0] in,
     output logic out
@@ -17,6 +16,6 @@ module isZero (
         end
     endgenerate
 
-    not #(50ps) outNOT (out, tmp[62]);
+    not outNOT (out, tmp[62]);
 
 endmodule

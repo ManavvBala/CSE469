@@ -6,28 +6,24 @@ vlib work
 #     their own "vlog" line below.
 vlog "./mux2_1.sv"
 vlog "./mux4_1.sv"
-vlog "./mux16_1.sv"
-vlog "./mux32_1.sv"
-vlog "./mux64x32_1.sv"
-vlog "./demux1_2.sv"
-vlog "./demux2_4.sv"
-vlog "./demux3_8.sv"
-vlog "./demux5_32.sv"
-vlog "./DFF.sv"
-vlog "./DFF_enable.sv"
-vlog "./register.sv"
-vlog "./regfile.sv"
-vlog "./regstim.sv"
+vlog "./mux8_1.sv"
+vlog "./adder_1bit.sv"
+vlog "./alu_1bit.sv"
+vlog "./isZero.sv"
+vlog "./alu.sv"
+vlog "./isZero.sv"
+vlog "./alustim.sv"
+
 
 # Call vsim to invoke simulator
 #     Make sure the last item on the line is the name of the
 #     testbench module you want to execute.
-vsim -voptargs="+acc" -t 1ps -lib work regstim
+vsim -voptargs="+acc" -t 1ps -lib work alustim
 
 # Source the wave do file
 #     This should be the file that sets up the signal window for
 #     the module you are testing.
-do regfile_wave.do
+do alu_wave.do
 
 # Set the window types
 view wave
