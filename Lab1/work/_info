@@ -10,7 +10,7 @@ cModel Technology
 Z0 dC:/Users/Hitesh M/Documents/GitHub/CSE469/Lab1
 vD_FF
 Z1 DXx6 sv_std 3 std 0 22 AD7iAPLo6nTIKk<N0eo=D3
-Z2 !s110 1744354213
+Z2 !s110 1744941450
 !i10b 1
 !s100 mAi1d^UBh_1VM52d9_c4K1
 Ib4[WQTz36M4Daf]SMe1dm2
@@ -26,7 +26,7 @@ Z5 OV;L;10.5b;63
 r1
 !s85 0
 31
-Z6 !s108 1744354213.000000
+Z6 !s108 1744941450.000000
 !s107 ./DFF.sv|
 !s90 -reportprogress|300|./DFF.sv|
 !i113 1
@@ -173,7 +173,7 @@ R6
 R7
 vmux2_1
 R1
-R2
+Z8 !s110 1744941449
 !i10b 1
 !s100 R8N0;;l__JP@[?W8[ciLk3
 Ij9lIfhTD_1aYW]I>zYR[a3
@@ -189,7 +189,7 @@ R5
 r1
 !s85 0
 31
-R6
+Z9 !s108 1744941449.000000
 !s107 ./mux2_1.sv|
 !s90 -reportprogress|300|./mux2_1.sv|
 !i113 1
@@ -219,7 +219,7 @@ R6
 R7
 vmux4_1
 R1
-R2
+R8
 !i10b 1
 !s100 VA6V>IRfkJWlI9TYP8TTC3
 I<zoUiQ5j`5AFK>9R?YJ`j0
@@ -227,7 +227,7 @@ R3
 !s105 mux4_1_sv_unit
 S1
 R0
-R4
+w1744934440
 8./mux4_1.sv
 F./mux4_1.sv
 L0 1
@@ -235,7 +235,7 @@ R5
 r1
 !s85 0
 31
-R6
+R9
 !s107 ./mux4_1.sv|
 !s90 -reportprogress|300|./mux4_1.sv|
 !i113 1
