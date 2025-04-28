@@ -1,12 +1,22 @@
 module ControlUnit (
     input logic [10:0] instr,
     input logic negative, zero, overflow, carry_out,
-    output logic Reg2Loc, UncondBranch, BRTaken, MemRead, MemToReg, ALUOp0, ALUOp1, MemWrite, ALUSrc, RegWrite, ZExt
+    output logic Reg2Loc, 
+    UncondBranch, 
+    BRTaken, 
+    MemRead, 
+    MemToReg, 
+    ALUOp0, 
+    ALUOp1, 
+    MemWrite, 
+    ALUSrc, 
+    RegWrite, 
+    ZExt
 );
 
     // actual logic for instruction bits to cntrl bits
     always_comb begin
-        casex (instr)
+        case (instr)
             // ADDI
             11'b1001000100X: begin
                 Reg2Loc = 1'b1;
