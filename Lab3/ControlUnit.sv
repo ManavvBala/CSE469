@@ -1,5 +1,5 @@
 module ControlUnit (
-    input logic [10:0] instr,
+    input logic [10:0] opcode,
     input logic negative, zero, overflow, carry_out,
     output logic Reg2Loc, 
     UncondBranch, 
@@ -16,7 +16,7 @@ module ControlUnit (
 
     // actual logic for instruction bits to cntrl bits
     always_comb begin
-        case (instr)
+        case (opcode)
             // ADDI
             11'b1001000100X: begin
                 Reg2Loc = 1'b1;

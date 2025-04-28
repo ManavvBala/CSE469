@@ -26,10 +26,17 @@ assign dAddr9 = instr[20:12];
 assign brAddr26 = instr[25:0];
 assign condAddr19 = instr[23:5];
 
+// CPU CONTROL //
+ControlUnit control(.*);
+// CPU CONTROL //
+
 // Program Counting Logic //
+logic temp, brSelect;
+and #(50ps) AND1 (temp,BRTaken, zero);
+OR #(50ps) OR1 (brSelect, UncondBranch, temp);
 
 logic[63:0] nextAddrPreShift,nextAddrPostShift;
-mux2x64_64 ucondMux(.sel(UncondBranch),.i1({38{brAddr26[25]},brAddr26}),.i0({45{condAddr19[18]},condAddr19}),.out(nextAddrPreShift));
+mux2xN_N ucondMux(.sel(brSelect),.i1({38{brAddr26[25]},brAddr26}),.i0({45{condAddr19[18]},condAddr19}),.out(nextAddrPreShift));
 shifter brShifter (.value(nextAddrPreShift), .direction(0), .distance(2), .result(nextAddrPostShift));
 
 logic [63:0] curPC, prevPC;
@@ -45,6 +52,28 @@ instructmem imem(.address(prevPC),.instruction(instr),.clk(clk));
 
 // Program Counting Logic //
 
+// Register File Logic //
+logic [4:0] Ab;
+mux2xN_N #(WIDTH = 5) reglocmux(.i1(Rm),.i0(Rd),.sel(Reg2Loc),.out(Ab));
 
+logic [63:0] Rd1, Rd2;
+rf regfile(.ReadRegister1(Rn),.ReadRegister2(Ab),
+.WriteRegister(Rd),.WriteData(),
+.RegWrite(RegWrite),.clk(clk),.ReadData1(Rd1),.ReadData2(Rd2));
+
+// Register File Logic //
+
+// ALU Logic //
+
+logic[63:0] AluMuxIn,ALUin;
+mux2xN_N immsrccmux(.i1({55{1'b0},imm12}),.i0({55{dAddr9[8]},dAddr9}),.sel(ZExt),.out(AluMuxIn));
+mux2xN_N alusrcmux(.i1(AluMuxIn),.i0(Rd2),.sel(ALUSrc),.out(ALUin));
+
+logic[63:0] aluOut;
+alu mainAlu(.A(Rd1),B(ALUin),.cntrl({0,ALUOp0,ALUOp1}),
+.result(aluOut),.negative(negative),.zero(zero),
+.overflow(overflow),.carry_out(carry_out));
+
+// ALU Logic
 
 endmodule
