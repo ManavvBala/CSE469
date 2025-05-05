@@ -11,7 +11,9 @@ module ControlUnit (
     MemWrite, 
     ALUSrc, 
     RegWrite, 
-    ZExt
+    ZExt,
+    BranchLink,
+    BranchRegister
 );
 
     // actual logic for instruction bits to cntrl bits
@@ -30,6 +32,8 @@ module ControlUnit (
                 ALUSrc = 1'b0;
                 RegWrite = 1'b1;
                 ZExt = 1'b1;
+                BranchLink = 1'b0;
+                BranchRegister = 1'b0;
             end
             // ADDS
             11'b10101011000: begin
@@ -44,6 +48,8 @@ module ControlUnit (
                 ALUSrc = 1'b0;
                 RegWrite = 1'b1;
                 ZExt = 1'b0;
+                BranchLink = 1'b0;
+                BranchRegister = 1'b0;
             end
             // SUBS
             11'b11101011000: begin
@@ -72,6 +78,8 @@ module ControlUnit (
                 ALUSrc = 1'b0;
                 RegWrite = 1'b0;
                 ZExt = 1'b0;
+                BranchLink = 1'b0;
+                BranchRegister = 1'b0;
             end
             // B.LT
             11'b01010100XXX: begin
@@ -86,6 +94,8 @@ module ControlUnit (
                 ALUSrc = 1'bX;
                 RegWrite = 1'b0;
                 ZExt = 1'b0;
+                BranchLink = 1'b0;
+                BranchRegister = 1'b0;
             end
             // BL
             11'b100101XXXXX: begin
@@ -100,6 +110,8 @@ module ControlUnit (
                 ALUSrc = 1'bX;
                 RegWrite = 1'b0;
                 ZExt = 1'b0;
+                BranchLink = 1'b1;
+                BranchRegister = 1'b0;
             end
             // BR
             11'b11010110000: begin
@@ -114,6 +126,8 @@ module ControlUnit (
                 ALUSrc = 1'bX;
                 RegWrite = 1'b0;
                 ZExt = 1'b0;
+                BranchLink = 1'b0;
+                BranchRegister = 1'b1;
             end
             // CBZ
             11'b10110100XXX: begin
@@ -128,6 +142,8 @@ module ControlUnit (
                 ALUSrc = 1'b0;
                 RegWrite = 1'b0;
                 ZExt = 1'b0;
+                BranchLink = 1'b0;
+                BranchRegister = 1'b0;
             end
             // LDUR
             11'b11111000010: begin
@@ -142,6 +158,8 @@ module ControlUnit (
                 ALUSrc = 1'b1;
                 RegWrite = 1'b1;
                 ZExt = 1'b0;
+                BranchLink = 1'b0;
+                BranchRegister = 1'b0;
             end
             // STUR
             11'b11111000000: begin
@@ -156,6 +174,8 @@ module ControlUnit (
                 ALUSrc = 1'b1;
                 RegWrite = 1'b0;
                 ZExt = 1'b0;
+                BranchLink = 1'b0;
+                BranchRegister = 1'b0;
             end
             default: begin
                 Reg2Loc = 1'bX;
@@ -169,6 +189,8 @@ module ControlUnit (
                 ALUSrc = 1'bX;
                 RegWrite = 1'b1;
                 ZExt = 1'bX;
+                BranchLink = 1'b0;
+                BranchRegister = 1'b0;
             end
         endcase
     end
