@@ -30,7 +30,7 @@ module ControlUnit (
                 ALUOp0 = 1'b0;
                 ALUOp1 = 1'b1;
                 MemWrite = 1'b0;
-                ALUSrc = 1'b0;
+                ALUSrc = 1'b1;
                 RegWrite = 1'b1;
                 ZExt = 1'b1;
                 BranchLink = 1'b0;
@@ -92,7 +92,7 @@ module ControlUnit (
             11'b01010100XXX: begin
                 Reg2Loc = 1'bX;
                 UncondBranch = 1'b0;
-                BRtaken = 1'b0; // change this based on flags
+                BRtaken = 1'b1; // change this based on flags
                 MemRead = 1'b0;
                 MemToReg = 1'b0;
                 ALUOp0 = 1'bX;

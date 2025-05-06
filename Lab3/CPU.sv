@@ -109,9 +109,9 @@ alu mainAlu(.A(Rd1),B(ALUin),.cntrl({0,ALUOp0,ALUOp1}),
 
 // NEED TO ADD data memory //
 logic [63:0] dataMemReadData; // needs to go to mux (along with alu result)
-datamem dataMemory (.address(aluOut), .write_enable(MemWrite), .read_enable(MemRead)
+datamem dataMemory (.address(aluOut), .write_enable(MemWrite), .read_enable(MemRead),
                     .write_data(Rd2), .clk, .read_data(dataMemReadData), .xfer_size(4'd4));
-mux2xN_N (N=64) memtoregmux(.in1(dataMemReadData), .in0(aluOut), .sel(MemToReg), .out(memtoregmux));
+mux2xN_N (N=64) memtoregmux(.i1(dataMemReadData), .i0(aluOut), .sel(MemToReg), .out(memtoregmux));
 // data memory //
 
 endmodule
