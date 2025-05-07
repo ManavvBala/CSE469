@@ -3,7 +3,7 @@
 // two words of the address must be 0).
 //
 // To change the file that is loaded, edit the filename here:
-`define BENCHMARK "./AddiB.arm"
+`define BENCHMARK "./Benchmarks/AddiB.arm"
 //`define BENCHMARK "../benchmarks/test02_AddsSubs.arm"
 //`define BENCHMARK "../benchmarks/test03_CbzB.arm"
 //`define BENCHMARK "../benchmarks/test04_LdurStur.arm"
@@ -41,6 +41,9 @@ module instructmem (
 	initial begin
 		$readmemb(`BENCHMARK, mem);
 		$display("Running benchmark: ", `BENCHMARK);
+		$display("First few instructions:");
+		for (int i = 0; i < 5; i++)
+			$display("mem[%0d] = %b", i, mem[i]);
 	end
 	
 	// Handle the reads.

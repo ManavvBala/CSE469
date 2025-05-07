@@ -19,12 +19,12 @@ module ControlUnit (
 
     // actual logic for instruction bits to cntrl bits
     always_comb begin
-        case (opcode)
+        casex (opcode)
             // ADDI
             11'b1001000100X: begin
                 Reg2Loc = 1'b1;
-                UncondBranch = 1'bX;
-                BRtaken = 1'b0;
+                UncondBranch = 1'b0;
+                BRTaken = 1'b0;
                 MemRead = 1'b0;
                 MemToReg = 1'b0;
                 ALUOp0 = 1'b0;
@@ -40,8 +40,8 @@ module ControlUnit (
             // ADDS
             11'b10101011000: begin
                 Reg2Loc = 1'b1;
-                UncondBranch = 1'bX;
-                BRtaken = 1'b0;
+                UncondBranch = 1'b0;
+                BRTaken = 1'b0;
                 MemRead = 1'b0;
                 MemToReg = 1'b0;
                 ALUOp0 = 1'b0;
@@ -57,8 +57,8 @@ module ControlUnit (
             // SUBS
             11'b11101011000: begin
                 Reg2Loc = 1'b1;
-                UncondBranch = 1'bX;
-                BRtaken = 1'b0;
+                UncondBranch = 1'b0;
+                BRTaken = 1'b0;
                 MemRead = 1'b0;
                 MemToReg = 1'b0;
                 ALUOp0 = 1'b1;
@@ -75,7 +75,7 @@ module ControlUnit (
             11'b000101XXXXX: begin
                 Reg2Loc = 1'bX;
                 UncondBranch = 1'b1;
-                BRtaken = 1'b1;
+                BRTaken = 1'b1;
                 MemRead = 1'b0;
                 MemToReg = 1'b0;
                 ALUOp0 = 1'bX;
@@ -92,7 +92,7 @@ module ControlUnit (
             11'b01010100XXX: begin
                 Reg2Loc = 1'bX;
                 UncondBranch = 1'b0;
-                BRtaken = 1'b1; // change this based on flags
+                BRTaken = 1'b1; // change this based on flags
                 MemRead = 1'b0;
                 MemToReg = 1'b0;
                 ALUOp0 = 1'bX;
@@ -109,7 +109,7 @@ module ControlUnit (
             11'b100101XXXXX: begin
                 Reg2Loc = 1'bX;
                 UncondBranch = 1'b1;
-                BRtaken = 1'b1;
+                BRTaken = 1'b1;
                 MemRead = 1'b0;
                 MemToReg = 1'b0;
                 ALUOp0 = 1'bX;
@@ -126,7 +126,7 @@ module ControlUnit (
             11'b11010110000: begin
                 Reg2Loc = 1'b1;
                 UncondBranch = 1'b1;
-                BRtaken = 1'b1;
+                BRTaken = 1'b1;
                 MemRead = 1'b0;
                 MemToReg = 1'b0;
                 ALUOp0 = 1'bX;
@@ -143,7 +143,7 @@ module ControlUnit (
             11'b10110100XXX: begin
                 Reg2Loc = 1'b0;
                 UncondBranch = 1'b0;
-                BRtaken = 1'b0; // based on zero flag
+                BRTaken = 1'b0; // based on zero flag
                 MemRead = 1'b0;
                 MemToReg = 1'b0;
                 ALUOp0 = 1'b0;
@@ -159,8 +159,8 @@ module ControlUnit (
             // LDUR
             11'b11111000010: begin
                 Reg2Loc = 1'bX;
-                UncondBranch = 1'bX;
-                BRtaken = 1'b0;
+                UncondBranch = 1'b0;
+                BRTaken = 1'b0;
                 MemRead = 1'b1;
                 MemToReg = 1'b1;
                 ALUOp0 = 1'bX;
@@ -176,8 +176,8 @@ module ControlUnit (
             // STUR
             11'b11111000000: begin
                 Reg2Loc = 1'b0;
-                UncondBranch = 1'bX;
-                BRtaken = 1'b0;
+                UncondBranch = 1'b0;
+                BRTaken = 1'b0;
                 MemRead = 1'b0;
                 MemToReg = 1'b0;
                 ALUOp0 = 1'bX;
@@ -192,8 +192,8 @@ module ControlUnit (
             end
             default: begin
                 Reg2Loc = 1'bX;
-                UncondBranch = 1'bX;
-                BRtaken = 1'bX;
+                UncondBranch = 1'b0;
+                BRTaken = 1'bX;
                 MemRead = 1'b0;
                 MemToReg = 1'bX;
                 ALUOp0 = 1'bX;

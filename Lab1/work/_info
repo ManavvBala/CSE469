@@ -10,7 +10,7 @@ cModel Technology
 Z0 dC:/Users/Hitesh M/Documents/GitHub/CSE469/Lab1
 vD_FF
 Z1 DXx6 sv_std 3 std 0 22 AD7iAPLo6nTIKk<N0eo=D3
-Z2 !s110 1744941450
+Z2 !s110 1746636195
 !i10b 1
 !s100 mAi1d^UBh_1VM52d9_c4K1
 Ib4[WQTz36M4Daf]SMe1dm2
@@ -26,7 +26,7 @@ Z5 OV;L;10.5b;63
 r1
 !s85 0
 31
-Z6 !s108 1744941450.000000
+Z6 !s108 1746636195.000000
 !s107 ./DFF.sv|
 !s90 -reportprogress|300|./DFF.sv|
 !i113 1
@@ -36,13 +36,13 @@ vdemux1_2
 R1
 R2
 !i10b 1
-!s100 FmHN7734YQ`[GP7:QhVii2
-IfPkHaLJ6mgEn7`amCzaO`0
+!s100 S6<JKXcV;@]>C<82gjb?a2
+IiBW^zlhKM`G7g;l6b9eEF1
 R3
 !s105 demux1_2_sv_unit
 S1
 R0
-w1744353938
+w1746636054
 8./demux1_2.sv
 F./demux1_2.sv
 L0 2
@@ -59,16 +59,16 @@ vdemux2_4
 R1
 R2
 !i10b 1
-!s100 MTmAicK`lLm=GVFh=27<o1
-IX41h1=4KCVSN@Ri`SL_F]1
+!s100 LM5QLgQ=U`Bc^^0X0RGQ@2
+ITd`;Y3=GkZ8`_zaa`mFl22
 R3
 !s105 demux2_4_sv_unit
 S1
 R0
-w1744265008
+w1746636050
 8./demux2_4.sv
 F./demux2_4.sv
-L0 2
+L0 1
 R5
 r1
 !s85 0
@@ -82,13 +82,13 @@ vdemux3_8
 R1
 R2
 !i10b 1
-!s100 FI90zANZjhZ<[0WIzn^^h0
-I>F5;27zYoBYS_IJfWEo4`2
+!s100 19z;;ooQ8b>PPDlGiZBaP2
+Iz>M=4VWhdCf^8=az>^46H0
 R3
 !s105 demux3_8_sv_unit
 S1
 R0
-w1744260650
+w1746636188
 8./demux3_8.sv
 F./demux3_8.sv
 L0 1
@@ -105,13 +105,13 @@ vdemux5_32
 R1
 R2
 !i10b 1
-!s100 okFnhZf6R2Fe66UPn:HO^0
-I736<970Bn^6lLdi2S2Hbc0
+!s100 :A?_X^]KhO8`VjAf<KIUR2
+IP>PYVJAbU]O;j>j1H:hGh3
 R3
 !s105 demux5_32_sv_unit
 S1
 R0
-w1744260623
+w1746636035
 8./demux5_32.sv
 F./demux5_32.sv
 L0 1
@@ -128,13 +128,13 @@ vDFF_enable
 R1
 R2
 !i10b 1
-!s100 E@bDI@k]<8RB2Rz67do_L0
-IW[m[hQA:NG95X4526KGWh2
+!s100 ;cRXnl>TGKi7@SbMo16g?3
+Ifh8ae?G4ejH63:0dWA[_@0
 R3
 !s105 DFF_enable_sv_unit
 S1
 R0
-w1744260246
+w1746635963
 8./DFF_enable.sv
 F./DFF_enable.sv
 L0 1
@@ -173,7 +173,7 @@ R6
 R7
 vmux2_1
 R1
-Z8 !s110 1744941449
+!s110 1746636194
 !i10b 1
 !s100 R8N0;;l__JP@[?W8[ciLk3
 Ij9lIfhTD_1aYW]I>zYR[a3
@@ -189,7 +189,7 @@ R5
 r1
 !s85 0
 31
-Z9 !s108 1744941449.000000
+Z8 !s108 1746636194.000000
 !s107 ./mux2_1.sv|
 !s90 -reportprogress|300|./mux2_1.sv|
 !i113 1
@@ -219,7 +219,7 @@ R6
 R7
 vmux4_1
 R1
-R8
+R2
 !i10b 1
 !s100 VA6V>IRfkJWlI9TYP8TTC3
 I<zoUiQ5j`5AFK>9R?YJ`j0
@@ -235,7 +235,7 @@ R5
 r1
 !s85 0
 31
-R9
+R8
 !s107 ./mux4_1.sv|
 !s90 -reportprogress|300|./mux4_1.sv|
 !i113 1
@@ -267,13 +267,13 @@ vregfile
 R1
 R2
 !i10b 1
-!s100 IHl[BZHUI75KcF]iI^9SW2
-IG:iHhnc@PKRme2>iZU<?g2
+!s100 l^[g7JS?E`iQ0=5U1hPnR0
+IVJ<>K`6?l`i8SOn<in6L10
 R3
 !s105 regfile_sv_unit
 S1
 R0
-w1744265157
+w1746636158
 8./regfile.sv
 F./regfile.sv
 L0 1
@@ -290,13 +290,13 @@ vregister
 R1
 R2
 !i10b 1
-!s100 MVYP:M9AkKK[JZIaBgn_V1
-IOUBEV=gfk0b<P^52e6JBk0
+!s100 Dk:Lz8PNIDiHWOhz8l8T;1
+IAjJObSD8dUSH_0QR8DA][3
 R3
 !s105 register_sv_unit
 S1
 R0
-w1744260839
+w1746636077
 8./register.sv
 F./register.sv
 L0 1

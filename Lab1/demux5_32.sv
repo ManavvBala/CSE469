@@ -1,15 +1,15 @@
 module demux5_32 (
-    input logic in,
-    input logic [4:0] sel,
-    output logic[31:0] out
+    input  logic in,
+    input  logic [4:0] sel,
+    output logic [31:0] out
 );
 
-	logic d1,d2,d3,d4;
+    logic [3:0] enable_8;
+    demux2_4 top_stage (.in(in), .sel(sel[4:3]), .out(enable_8));
 
-	demux2_4 mid(.in(in),.sel(sel[4:3]),.out({d1,d2,d3,d4}));
-	demux3_8 m1(.in(d1),.sel(sel[2:0]),.out(out[31:24]));
-	demux3_8 m2(.in(d2),.sel(sel[2:0]),.out(out[23:16]));
-	demux3_8 m3(.in(d3),.sel(sel[2:0]),.out(out[15:8]));
-	demux3_8 m4(.in(d4),.sel(sel[2:0]),.out(out[7:0]));
 
+    demux3_8 d0 (.in(enable_8[0]), .sel(sel[2:0]), .out(out[7:0]));
+    demux3_8 d1 (.in(enable_8[1]), .sel(sel[2:0]), .out(out[15:8]));
+    demux3_8 d2 (.in(enable_8[2]), .sel(sel[2:0]), .out(out[23:16]));
+    demux3_8 d3 (.in(enable_8[3]), .sel(sel[2:0]), .out(out[31:24]));
 endmodule

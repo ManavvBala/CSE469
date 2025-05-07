@@ -7,7 +7,7 @@ output logic [N-1:0] out);
   genvar i;
   generate 
     for (i = 0; i < N; i++) begin : bitMux
-      mux2_1 m(.in({i1[i], i0[i]}), .sel(sel), .out(out[i]));
+      mux2_1 m(.d({i1[i], i0[i]}), .sel(sel), .q(out[i]));
     end
   endgenerate 
 

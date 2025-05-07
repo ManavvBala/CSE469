@@ -5,10 +5,11 @@ module demux1_2 (
     output logic[1:0] out
 );
 
+
 wire w;
 
-not #(50ps) n1 (w,sel);
-and #(50ps) a1 (out[0],w,in);
-and #(50ps) a2 (out[1],sel,in);
+not #(50ps) n1 (w, sel);
+and #(50ps) a1 (out[0], w, in);  // out[0] = in & ~sel
+and #(50ps) a2 (out[1], sel, in); // out[1] = in & sel
 
 endmodule
