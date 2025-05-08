@@ -32,6 +32,7 @@ vlog "./mux64x32_1.sv"
 vlog "./PC.sv"
 vlog "./regfile.sv"
 vlog "./register.sv"
+vlog "./flag_register.sv"
 vlog "./cpustim.sv"
 
 

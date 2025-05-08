@@ -1,0 +1,7 @@
+Wed May 07 12:04:03 PDT 2025
+Trace back: pick: no current page
+    while executing
+"{namespace inscope :: {.main_pane.dataflow.interior.cs.body.pw.df.c _mouse_motion}} .main_pane.dataflow.interior.cs.body.pw.df.c.nlv 1 584 612 1155 77..."
+    (command bound to event)
+  <2:C:/intelFPGA_lite/17.0/modelsim_ase/win32aloem/tk8.5/bgerror.tcl:92: ::tkerror {pick: no current page}
+  <1:eval:1: ::tk::dialog::error::bgerror {pick: no current page}

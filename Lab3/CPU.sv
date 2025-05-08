@@ -19,7 +19,8 @@ module CPU (
           ZExt,
           BranchLink,
           BranchRegister,
-          CheckForLT;
+          CheckForLT,
+			 SetFlag;
 
     logic [4:0] Rd, Rn, Rm;
     logic [11:0] imm12;
@@ -36,7 +37,11 @@ module CPU (
     assign dAddr9 = instr[20:12];
     assign brAddr26 = instr[25:0];
     assign condAddr19 = instr[23:5];
-
+	 
+	 logic alu_zero, alu_negative, alu_overflow, alu_carry;
+	 
+	 
+	 // control unit doesnt actually need the alu flags
     // CPU CONTROL //
 ControlUnit control (
     .opcode(opcode),
@@ -57,7 +62,8 @@ ControlUnit control (
     .ZExt(ZExt),
     .BranchLink(BranchLink),
     .BranchRegister(BranchRegister),
-    .CheckForLT(CheckForLT)
+    .CheckForLT(CheckForLT),
+	 .SetFlag(SetFlag)
 );
    // CPU CONTROL //
 
@@ -67,11 +73,11 @@ ControlUnit control (
     logic notZero, negativeSelect;
     logic condBranchResult;
 
-    not #(50ps) NOT1 (zero, notZero);
+    not #(50ps) NOT1 (notZero, zero);
     and #(50ps) AND2 (negativeSelect, notZero, negative);
 
     mux2xN_N condBrancMux (
-        .i0(zero),
+        .i0(alu_zero),
         .i1(negativeSelect),
         .sel(CheckForLT),
         .out(temp)
@@ -83,29 +89,33 @@ ControlUnit control (
     logic [63:0] Rd1, Rd2;
     logic [63:0] nextAddrPreShift, nextAddrPostShift;
     logic [63:0] BRMuxout;
-
+	 
+	 // sign extension
     mux2xN_N #(64) ucondMux (
         .sel(UncondBranch),
         .i1({{38{brAddr26[25]}}, brAddr26}),
         .i0({{45{condAddr19[18]}}, condAddr19}),
         .out(nextAddrPreShift)
     );
+	 
+	 logic finalPCMuxIntermediate;
+	 logic [63:0] curPC, prevPC;
 
-    mux2xN_N #(64) BRMux (
-        .i0(nextAddrPreShift),
+    mux2xN_N #(64) FinalPCMUX (
+        .i0(finalPCMuxIntermediate),
         .i1(Rd1),
         .sel(BranchRegister),
-        .out(BRMuxout)
+        .out(curPC)
     );
 
     shifter brShifter (
-        .value(BRMuxout),
+        .value(nextAddrPreShift),
         .direction(0),
         .distance(2),
         .result(nextAddrPostShift)
     );
 
-    logic [63:0] curPC, prevPC;
+    
     PC pc (
         .clk(clk),
         .DataIn(curPC),
@@ -126,12 +136,23 @@ ControlUnit control (
         .out(brAddr)
     );
 
-    mux2xN_N #(64) brMux (
-        .sel(brSelect),
-        .i1(brAddr),
-        .i0(regAddr),
-        .out(curPC)
-    );
+    // Final branch target mux - select between PC-relative and absolute
+//logic [63:0] absoluteBrAddr;
+//mux2xN_N #(64) absoluteBrMux (
+//    .i0(brAddr),        // Your existing PC-relative branch result
+//    .i1(Rd1),           // Direct register value for BR
+//    .sel(BranchRegister),
+//    .out(absoluteBrAddr)
+//);
+
+// Replace your existing brMux with this updated one
+// Uses absoluteBrAddr instead of brAddr
+mux2xN_N #(64) brMux (
+    .sel(brSelect),
+    .i1(brAddr), // Now using the absolute/relative mux output
+    .i0(regAddr),
+    .out(finalPCMuxIntermediate)
+);
 
     instructmem imem (
         .address(prevPC),
@@ -195,6 +216,12 @@ ControlUnit control (
         .sel(ALUSrc),
         .out(ALUin)
     );
+	 
+	 // flag register
+
+	 flag_register regflag (.in_zero(alu_zero), .in_negative(alu_negative), .in_overflow(alu_overflow), .in_carry(alu_carry),
+						 .out_zero(zero),    .out_negative(negative),    .out_overflow(overflow),    .out_carry(carry_out),
+						 .clk, .reset(rst), .enable(SetFlag));
 
     logic [63:0] aluOut;
     alu mainAlu (
@@ -202,10 +229,10 @@ ControlUnit control (
         .B(ALUin),
         .cntrl({1'b0, ALUOp1, ALUOp0}),
         .result(aluOut),
-        .negative(negative),
-        .zero(zero),
-        .overflow(overflow),
-        .carry_out(carry_out)
+        .negative(alu_negative),
+        .zero(alu_zero),
+        .overflow(alu_overflow),
+        .carry_out(alu_carry)
     );
     // ALU Logic //
 

@@ -77,4 +77,32 @@ module cpustim();
         $display("Branch: UncondBr=%b, condBr=%b, brSelect=%b",
                 dut.UncondBranch, dut.condBranchResult, dut.brSelect);
     end
+	 
+	 always @(posedge clk) begin
+    if (dut.instr[31:21] == 11'b11010110000) begin  // BR instruction
+        $display("BR Instruction detected!");
+        $display("Rn=%d, Rd1=%h", dut.Rn, dut.Rd1);
+        $display("BranchRegister=%b, UncondBranch=%b, brSelect=%b", 
+                 dut.BranchRegister, dut.UncondBranch, dut.brSelect);
+        $display("nextPC=%h", dut.curPC);
+    end
+	end
+	
+	// Add to cpustim.sv
+always @(posedge clk) begin
+    // Log all instruction execution 
+    $display("Cycle %0d: PC=0x%h, Instr=0x%h", 
+             cycle_count, dut.prevPC, dut.instr);
+             
+    // Special attention to addresses near BL FINAL
+    if (dut.prevPC == 64) begin
+        $display("*** REACHED BL FINAL ***");
+    end
+    else if (dut.prevPC == 52) begin
+        $display("*** REACHED BR X5 (END) ***");
+    end
+    else if (dut.prevPC == 72) begin
+        $display("*** REACHED FINAL ***");
+    end
+end
 endmodule
