@@ -73,9 +73,9 @@ ControlUnit control (
     logic notZero, negativeSelect;
     logic condBranchResult;
 
-    not #(50ps) NOT1 (notZero, zero);
-    and #(50ps) AND2 (negativeSelect, notZero, negative);
-
+    //not #(50ps) NOT1 (notZero, zero);
+    //and #(50ps) AND2 (negativeSelect, notZero, negative);
+	 xor #(50ps) xorCheck (negativeSelect, negative, overflow);
     mux2xN_N condBrancMux (
         .i0(alu_zero),
         .i1(negativeSelect),

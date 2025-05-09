@@ -37,7 +37,7 @@ module ControlUnit (
                 BranchLink = 1'b0;
                 BranchRegister = 1'b0;
                 CheckForLT = 1'bX;
-					 SetFlag = 1'b1;
+					 SetFlag = 1'b0;
             end
             // ADDS
             11'b10101011000: begin
@@ -151,7 +151,7 @@ module ControlUnit (
             11'b10110100XXX: begin
                 Reg2Loc = 1'b0;
                 UncondBranch = 1'b0;
-                BRTaken = 1'b1; // based on zero flag
+                BRTaken = 1'b1; 
                 MemRead = 1'b0;
                 MemToReg = 1'b0;
                 ALUOp0 = 1'b0;

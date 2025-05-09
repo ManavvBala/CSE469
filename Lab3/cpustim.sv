@@ -1,8 +1,8 @@
 `timescale 1ns/10ps
 module cpustim();
     // Parameters
-    parameter CLOCK_PERIOD = 1000000;  // 1 ms clock period (very long)
-    parameter MAX_CYCLES = 100;        // Adjust based on your program length
+    parameter CLOCK_PERIOD = 100000;  // 1 ms clock period (very long)
+    parameter MAX_CYCLES = 1500;        // Adjust based on your program length
     // Signals
     logic clk;
     logic rst;
@@ -17,7 +17,7 @@ module cpustim();
     // Clock generation
     initial begin
         clk = 0;
-        repeat (1000) begin
+        repeat (3000) begin
             #(CLOCK_PERIOD/2) clk = ~clk;
         end
     end
@@ -64,7 +64,7 @@ module cpustim();
         end
         
         // End simulation
-        $stop;
+        $finish;
     end
     
     // Debug display logic
@@ -85,6 +85,12 @@ module cpustim();
         $display("BranchRegister=%b, UncondBranch=%b, brSelect=%b", 
                  dut.BranchRegister, dut.UncondBranch, dut.brSelect);
         $display("nextPC=%h", dut.curPC);
+		  
+		  if (dut.instr == 32'b000101_00000000000000000000000000) begin
+    $display("HALT instruction detected at PC=%h", dut.prevPC);
+    $finish;
+end
+
     end
 	end
 	

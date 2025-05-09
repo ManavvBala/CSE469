@@ -26,6 +26,62 @@ add wave -noupdate /cpustim/dut/control/ZExt
 add wave -noupdate /cpustim/dut/control/BranchLink
 add wave -noupdate /cpustim/dut/control/BranchRegister
 add wave -noupdate /cpustim/dut/control/CheckForLT
+add wave -noupdate {/cpustim/dut/dataMemory/mem[80]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[79]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[78]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[77]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[76]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[75]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[74]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[73]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[72]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[71]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[70]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[69]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[68]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[67]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[66]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[65]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[64]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[63]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[62]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[61]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[60]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[59]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[58]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[57]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[56]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[55]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[54]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[53]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[52]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[51]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[50]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[49]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[48]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[47]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[46]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[45]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[44]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[43]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[42]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[41]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[40]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[39]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[38]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[37]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[36]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[35]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[34]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[33]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[32]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[31]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[30]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[29]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[28]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[27]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[26]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[25]}
 add wave -noupdate {/cpustim/dut/dataMemory/mem[24]}
 add wave -noupdate {/cpustim/dut/dataMemory/mem[23]}
 add wave -noupdate {/cpustim/dut/dataMemory/mem[22]}
@@ -75,7 +131,7 @@ add wave -noupdate -radix hexadecimal /cpustim/dut/Rd1
 add wave -noupdate -radix hexadecimal /cpustim/dut/Rd2
 add wave -noupdate -radix hexadecimal /cpustim/dut/ALUin
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {45390969590 ps} 0}
+WaveRestoreCursors {{Cursor 1} {149385448588 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 236
 configure wave -valuecolwidth 254
@@ -91,4 +147,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {14093750 ns} {56249188632 ps}
+WaveRestoreZoom {149349030728 ps} {149549328960 ps}
