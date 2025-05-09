@@ -26,11 +26,36 @@ add wave -noupdate /cpustim/dut/control/ZExt
 add wave -noupdate /cpustim/dut/control/BranchLink
 add wave -noupdate /cpustim/dut/control/BranchRegister
 add wave -noupdate /cpustim/dut/control/CheckForLT
+add wave -noupdate {/cpustim/dut/dataMemory/mem[24]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[23]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[22]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[21]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[20]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[19]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[18]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[17]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[16]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[15]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[14]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[13]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[12]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[11]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[10]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[9]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[8]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[7]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[6]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[5]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[4]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[3]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[2]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[1]}
+add wave -noupdate {/cpustim/dut/dataMemory/mem[0]}
 add wave -noupdate -radix hexadecimal -childformat {{{/cpustim/dut/rf/register_values[31]} -radix decimal} {{/cpustim/dut/rf/register_values[30]} -radix decimal} {{/cpustim/dut/rf/register_values[29]} -radix decimal} {{/cpustim/dut/rf/register_values[28]} -radix decimal} {{/cpustim/dut/rf/register_values[27]} -radix decimal} {{/cpustim/dut/rf/register_values[26]} -radix decimal} {{/cpustim/dut/rf/register_values[25]} -radix decimal} {{/cpustim/dut/rf/register_values[24]} -radix decimal} {{/cpustim/dut/rf/register_values[23]} -radix decimal} {{/cpustim/dut/rf/register_values[22]} -radix decimal} {{/cpustim/dut/rf/register_values[21]} -radix decimal} {{/cpustim/dut/rf/register_values[20]} -radix decimal} {{/cpustim/dut/rf/register_values[19]} -radix decimal} {{/cpustim/dut/rf/register_values[18]} -radix decimal} {{/cpustim/dut/rf/register_values[17]} -radix decimal} {{/cpustim/dut/rf/register_values[16]} -radix decimal} {{/cpustim/dut/rf/register_values[15]} -radix decimal} {{/cpustim/dut/rf/register_values[14]} -radix decimal} {{/cpustim/dut/rf/register_values[13]} -radix decimal} {{/cpustim/dut/rf/register_values[12]} -radix decimal} {{/cpustim/dut/rf/register_values[11]} -radix decimal} {{/cpustim/dut/rf/register_values[10]} -radix decimal} {{/cpustim/dut/rf/register_values[9]} -radix decimal} {{/cpustim/dut/rf/register_values[8]} -radix decimal} {{/cpustim/dut/rf/register_values[7]} -radix decimal} {{/cpustim/dut/rf/register_values[6]} -radix decimal} {{/cpustim/dut/rf/register_values[5]} -radix decimal} {{/cpustim/dut/rf/register_values[4]} -radix decimal} {{/cpustim/dut/rf/register_values[3]} -radix decimal} {{/cpustim/dut/rf/register_values[2]} -radix decimal} {{/cpustim/dut/rf/register_values[1]} -radix decimal} {{/cpustim/dut/rf/register_values[0]} -radix decimal}} -expand -subitemconfig {{/cpustim/dut/rf/register_values[31]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[30]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[29]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[28]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[27]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[26]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[25]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[24]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[23]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[22]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[21]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[20]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[19]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[18]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[17]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[16]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[15]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[14]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[13]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[12]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[11]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[10]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[9]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[8]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[7]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[6]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[5]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[4]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[3]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[2]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[1]} {-height 15 -radix decimal} {/cpustim/dut/rf/register_values[0]} {-height 15 -radix decimal}} /cpustim/dut/rf/register_values
-add wave -noupdate /cpustim/dut/rf/ReadRegister1
-add wave -noupdate /cpustim/dut/rf/ReadRegister2
-add wave -noupdate /cpustim/dut/rf/ReadData1
-add wave -noupdate /cpustim/dut/rf/ReadData2
+add wave -noupdate -radix unsigned /cpustim/dut/rf/ReadRegister1
+add wave -noupdate -radix unsigned /cpustim/dut/rf/ReadRegister2
+add wave -noupdate -radix unsigned /cpustim/dut/rf/ReadData1
+add wave -noupdate -radix unsigned /cpustim/dut/rf/ReadData2
 add wave -noupdate /cpustim/dut/pc/DataIn
 add wave -noupdate /cpustim/dut/pc/DataOut
 add wave -noupdate /cpustim/dut/instr
@@ -38,16 +63,19 @@ add wave -noupdate -radix hexadecimal /cpustim/dut/curPC
 add wave -noupdate -radix hexadecimal /cpustim/dut/prevPC
 add wave -noupdate /cpustim/dut/imem/address
 add wave -noupdate /cpustim/dut/imem/instruction
+add wave -noupdate /cpustim/dut/Rd
+add wave -noupdate /cpustim/dut/Rn
+add wave -noupdate /cpustim/dut/Rm
 add wave -noupdate -divider {New Divider}
-add wave -noupdate -radix hexadecimal /cpustim/dut/mainAlu/A
-add wave -noupdate -radix hexadecimal /cpustim/dut/mainAlu/B
+add wave -noupdate -radix unsigned /cpustim/dut/mainAlu/A
+add wave -noupdate -radix unsigned /cpustim/dut/mainAlu/B
 add wave -noupdate -radix binary /cpustim/dut/mainAlu/cntrl
 add wave -noupdate -radix hexadecimal /cpustim/dut/mainAlu/result
 add wave -noupdate -radix hexadecimal /cpustim/dut/Rd1
 add wave -noupdate -radix hexadecimal /cpustim/dut/Rd2
 add wave -noupdate -radix hexadecimal /cpustim/dut/ALUin
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {12348562832 ps} 0}
+WaveRestoreCursors {{Cursor 1} {45390969590 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 236
 configure wave -valuecolwidth 254
@@ -63,4 +91,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {0 ps} {42155438632 ps}
+WaveRestoreZoom {14093750 ns} {56249188632 ps}

@@ -98,12 +98,12 @@ ControlUnit control (
         .out(nextAddrPreShift)
     );
 	 
-	 logic finalPCMuxIntermediate;
+	 logic [63:0] finalPCMuxIntermediate;
 	 logic [63:0] curPC, prevPC;
 
     mux2xN_N #(64) FinalPCMUX (
         .i0(finalPCMuxIntermediate),
-        .i1(Rd1),
+        .i1(Rd2),
         .sel(BranchRegister),
         .out(curPC)
     );
@@ -246,7 +246,7 @@ mux2xN_N #(64) brMux (
         .write_data(Rd2),
         .clk(clk),
         .read_data(dataMemReadData),
-        .xfer_size(4'd4)
+        .xfer_size(4'd8)
     );
 
     mux2xN_N #(64) memtoregmux (

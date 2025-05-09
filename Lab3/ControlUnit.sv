@@ -172,8 +172,8 @@ module ControlUnit (
                 BRTaken = 1'b0;
                 MemRead = 1'b1;
                 MemToReg = 1'b1;
-                ALUOp0 = 1'bX;
-                ALUOp1 = 1'bX;
+                ALUOp0 = 1'b0;
+                ALUOp1 = 1'b1;
                 MemWrite = 1'b0;
                 ALUSrc = 1'b1;
                 RegWrite = 1'b1;
@@ -190,8 +190,8 @@ module ControlUnit (
                 BRTaken = 1'b0;
                 MemRead = 1'b0;
                 MemToReg = 1'b0;
-                ALUOp0 = 1'bX;
-                ALUOp1 = 1'bX;
+                ALUOp0 = 1'b0;
+                ALUOp1 = 1'b1;
                 MemWrite = 1'b1;
                 ALUSrc = 1'b1;
                 RegWrite = 1'b0;
