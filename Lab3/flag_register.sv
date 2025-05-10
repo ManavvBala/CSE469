@@ -5,7 +5,7 @@ module flag_register (
 	output logic out_zero, out_overflow, out_negative, out_carry
 );
 
-   // DFF enable for each in and out
+    // DFF enable for each in and out
 	DFF_enable zeroDFF (.d(in_zero), .q(out_zero), .clk, .reset, .enable);
 	DFF_enable overflowDFF (.d(in_overflow), .q(out_overflow), .clk, .reset, .enable);
 	DFF_enable negativeDFF (.d(in_negative), .q(out_negative), .clk, .reset, .enable);

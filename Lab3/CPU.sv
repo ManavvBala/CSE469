@@ -73,9 +73,7 @@ ControlUnit control (
     logic notZero, negativeSelect;
     logic condBranchResult;
 
-    //not #(50ps) NOT1 (notZero, zero);
-    //and #(50ps) AND2 (negativeSelect, notZero, negative);
-	 xor #(50ps) xorCheck (negativeSelect, negative, overflow);
+	xor #(50ps) xorCheck (negativeSelect, negative, overflow);
     mux2xN_N condBrancMux (
         .i0(alu_zero),
         .i1(negativeSelect),
@@ -98,8 +96,8 @@ ControlUnit control (
         .out(nextAddrPreShift)
     );
 	 
-	 logic [63:0] finalPCMuxIntermediate;
-	 logic [63:0] curPC, prevPC;
+    logic [63:0] finalPCMuxIntermediate;
+    logic [63:0] curPC, prevPC;
 
     mux2xN_N #(64) FinalPCMUX (
         .i0(finalPCMuxIntermediate),
@@ -115,7 +113,6 @@ ControlUnit control (
         .result(nextAddrPostShift)
     );
 
-    
     PC pc (
         .clk(clk),
         .DataIn(curPC),
@@ -136,30 +133,18 @@ ControlUnit control (
         .out(brAddr)
     );
 
-    // Final branch target mux - select between PC-relative and absolute
-//logic [63:0] absoluteBrAddr;
-//mux2xN_N #(64) absoluteBrMux (
-//    .i0(brAddr),        // Your existing PC-relative branch result
-//    .i1(Rd1),           // Direct register value for BR
-//    .sel(BranchRegister),
-//    .out(absoluteBrAddr)
-//);
-
-// Replace your existing brMux with this updated one
-// Uses absoluteBrAddr instead of brAddr
-mux2xN_N #(64) brMux (
-    .sel(brSelect),
-    .i1(brAddr), // Now using the absolute/relative mux output
-    .i0(regAddr),
-    .out(finalPCMuxIntermediate)
-);
+    mux2xN_N #(64) brMux (
+        .sel(brSelect),
+        .i1(brAddr),
+        .i0(regAddr),
+        .out(finalPCMuxIntermediate)
+    );
 
     instructmem imem (
         .address(prevPC),
         .instruction(instr),
         .clk(clk)
     );
-    // Program Counting Logic //
 
     // Register File Logic //
     logic [4:0] Ab;
@@ -217,13 +202,13 @@ mux2xN_N #(64) brMux (
         .out(ALUin)
     );
 	 
-	 // flag register
-
+	 // flag register (only outputs used for B.LT)
 	 flag_register regflag (.in_zero(alu_zero), .in_negative(alu_negative), .in_overflow(alu_overflow), .in_carry(alu_carry),
 						 .out_zero(zero),    .out_negative(negative),    .out_overflow(overflow),    .out_carry(carry_out),
 						 .clk, .reset(rst), .enable(SetFlag));
 
     logic [63:0] aluOut;
+
     alu mainAlu (
         .A(Rd1),
         .B(ALUin),
