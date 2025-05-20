@@ -1,0 +1,2 @@
+Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
+Info (10281): Verilog HDL Declaration information at CPU.sv(98): object "BRMux" differs only in case from object "brMux" in the same scope File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/CPU.sv Line: 98
