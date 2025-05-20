@@ -9,27 +9,28 @@ module CPU (
     logic Reg2Loc, 
           UncondBranch, 
           BRTaken, 
-          MemRead, 
-          MemToReg, 
-          ALUOp0, 
-          ALUOp1, 
-          MemWrite, 
-          ALUSrc, 
-          RegWrite, 
+          MemReadID, MemReadEX, MemReadMem, 
+          MemToRegID, MemToRegEX, MemToRegMem, 
+          ALUOpID0, ALUOpEX0,
+          ALUOpID1, ALUOpEX1,
+          MemWriteID,MemWriteEX, MemWriteMem, 
+          ALUSrc,
+          RegWriteID, RegWriteEX, RegWriteMem, RegWriteWB, 
           ZExt,
           BranchLink,
           BranchRegister,
           CheckForLT,
-			 SetFlag;
+		  SetFlagID, SetFlagEX;
 
-    logic [4:0] Rd, Rn, Rm;
+    logic [4:0] RdID, RdEX, RdMem, RdWB, Rn, Rm;
     logic [11:0] imm12;
     logic [8:0] dAddr9;
     logic [25:0] brAddr26;
     logic [18:0] condAddr19;
     logic [10:0] opcode;
+    
 
-    assign Rd = instr[4:0];
+    assign RdID = instr[4:0];
     assign Rn = instr[9:5];
     assign Rm = instr[20:16];
     assign opcode = instr[31:21];
@@ -38,10 +39,8 @@ module CPU (
     assign brAddr26 = instr[25:0];
     assign condAddr19 = instr[23:5];
 	 
-	 logic alu_zero, alu_negative, alu_overflow, alu_carry;
-	 
-	 
-	 // control unit doesnt actually need the alu flags
+	logic alu_zero, alu_negative, alu_overflow, alu_carry;
+	// control unit doesnt actually need the alu flags
     // CPU CONTROL //
 ControlUnit control (
     .opcode(opcode),
@@ -52,19 +51,39 @@ ControlUnit control (
     .Reg2Loc(Reg2Loc),
     .UncondBranch(UncondBranch),
     .BRTaken(BRTaken),
-    .MemRead(MemRead),
-    .MemToReg(MemToReg),
-    .ALUOp0(ALUOp0),
-    .ALUOp1(ALUOp1),
-    .MemWrite(MemWrite),
+    .MemRead(MemReadID),
+    .MemToReg(MemToRegID),
+    .ALUOp0(ALUOpID0),
+    .ALUOp1(ALUOpID1),
+    .MemWrite(MemWriteID),
     .ALUSrc(ALUSrc),
-    .RegWrite(RegWrite),
+    .RegWrite(RegWriteID),
     .ZExt(ZExt),
     .BranchLink(BranchLink),
     .BranchRegister(BranchRegister),
     .CheckForLT(CheckForLT),
-	 .SetFlag(SetFlag)
+	 .SetFlag(SetFlagID)
 );
+
+    // registers to push through control signals
+    D_FF ALUOpR0 (.q(ALUOpEX0), .d(ALUOpID0), .rst, .clk);
+	D_FF ALUOpR1 (.q(ALUOpEX1), .d(ALUOpID1), .rst, .clk);
+	
+	D_FF flagSetR (.q(SetFlagEX), .d(SetFlagID), .rst, .clk);
+	
+	D_FF MemWriteR0 (.q(MemWriteEX), .d(MemWriteID), .rst, .clk);
+	D_FF MemWriteR1 (.q(MemWriteMem), .d(MemWriteEX), .rst, .clk);
+	
+	D_FF MemReadR0  (.q(MemReadEX), .d(MemReadID), .rst, .clk);
+	D_FF MemReadR1 (.q(MemReadMem), .d(MemReadEX), .rst, .clk);
+	
+	D_FF MemToRegR0 (.q(MemToRegEX), .d(MemToRegID), .rst, .clk);
+	D_FF MemToRegR1 (.q(MemToRegMem), .d(MemToRegEX), .rst, .clk);
+	
+	D_FF RegWriteR0 (.q(RegWriteEX), .d(RegWriteID), .rst, .clk);
+	D_FF RegWriteR1 (.q(RegWriteMem), .d(RegWriteEX), .rst, .clk);
+	D_FF RegWriteR2 (.q(RegWriteWB), .d(RegWriteMem), .rst, .clk);
+
    // CPU CONTROL //
 
     // Program Counting Logic //
@@ -205,7 +224,7 @@ ControlUnit control (
 	 // flag register (only outputs used for B.LT)
 	 flag_register regflag (.in_zero(alu_zero), .in_negative(alu_negative), .in_overflow(alu_overflow), .in_carry(alu_carry),
 						 .out_zero(zero),    .out_negative(negative),    .out_overflow(overflow),    .out_carry(carry_out),
-						 .clk, .reset(rst), .enable(SetFlag));
+						 .clk, .rst(rst), .enable(SetFlag));
 
     logic [63:0] aluOut;
 
