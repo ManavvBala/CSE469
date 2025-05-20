@@ -4,7 +4,7 @@ module CPU (
     input logic rst
 );
 
-    logic [31:0] instr;
+    logic [31:0] instrIF,instrID;
     logic negative, zero, overflow, carry_out;
     logic Reg2Loc, 
           UncondBranch, 
@@ -30,14 +30,14 @@ module CPU (
     logic [10:0] opcode;
     
 
-    assign RdID = instr[4:0];
-    assign Rn = instr[9:5];
-    assign Rm = instr[20:16];
-    assign opcode = instr[31:21];
-    assign imm12 =  instr[21:10];
-    assign dAddr9 = instr[20:12];
-    assign brAddr26 = instr[25:0];
-    assign condAddr19 = instr[23:5];
+    assign RdID = instrID[4:0];
+    assign Rn = instrID[9:5];
+    assign Rm = instrID[20:16];
+    assign opcode = instrID[31:21];
+    assign imm12 =  instrID[21:10];
+    assign dAddr9 = instrID[20:12];
+    assign brAddr26 = instrID[25:0];
+    assign condAddr19 = instrID[23:5];
 	 
 	logic alu_zero, alu_negative, alu_overflow, alu_carry;
 	// control unit doesnt actually need the alu flags
@@ -83,6 +83,8 @@ ControlUnit control (
 	D_FF RegWriteR0 (.q(RegWriteEX), .d(RegWriteID), .rst, .clk);
 	D_FF RegWriteR1 (.q(RegWriteMem), .d(RegWriteEX), .rst, .clk);
 	D_FF RegWriteR2 (.q(RegWriteWB), .d(RegWriteMem), .rst, .clk);
+
+
 
    // CPU CONTROL //
 
@@ -161,9 +163,10 @@ ControlUnit control (
 
     instructmem imem (
         .address(prevPC),
-        .instruction(instr),
+        .instruction(instrIF),
         .clk(clk)
     );
+
 
     // Register File Logic //
     logic [4:0] Ab;
@@ -224,7 +227,7 @@ ControlUnit control (
 	 // flag register (only outputs used for B.LT)
 	 flag_register regflag (.in_zero(alu_zero), .in_negative(alu_negative), .in_overflow(alu_overflow), .in_carry(alu_carry),
 						 .out_zero(zero),    .out_negative(negative),    .out_overflow(overflow),    .out_carry(carry_out),
-						 .clk, .rst(rst), .enable(SetFlag));
+						 .clk, .rst(rst), .enable(SetFlagEx));
 
     logic [63:0] aluOut;
 
@@ -260,5 +263,21 @@ ControlUnit control (
         .out(memtoregmuxout)
     );
     // Data Memory //
+
+    // IF - ID Pipe
+    DFF_N IFIDp1 (.q(instrID),.d(instrIF),.rst,.clk);
+
+    // ID - EX Pipes
+    DFF_N IDEXP1(#5)(.q(RdEX),.d(RdId),.rst,.clk);
+
+    // EX - Mem Pipes
+    DFF_N IDEXP1(#5)(.q(RdMem),.d(RdEX),.rst,.clk);
+
+    // Mem - WB Pipes
+	DFF_N MemWB1(#5)(.q(WriteDataWB), .d(WriteDataMem), .rst, .clk);
+	DFF_N MemWB2(#5)(.q(RdWB), .d(RdMem), .rst, .clk);
+
+
+
 
 endmodule
