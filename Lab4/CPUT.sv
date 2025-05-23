@@ -125,81 +125,81 @@ module CPU (
     //==============================================================================
     
     // Control signals propagated from ID to EX stage
-    D_FF ALUOpR0 (.q(ALUOpEX0), .d(ALUOpID0), .rst, .clk);  // ALU operation bit 0
-    D_FF ALUOpR1 (.q(ALUOpEX1), .d(ALUOpID1), .rst, .clk);  // ALU operation bit 1
-    D_FF flagSetR (.q(SetFlagEX), .d(SetFlagID), .rst, .clk); // Set flags
-    D_FF MemWriteR0 (.q(MemWriteEX), .d(MemWriteID), .rst, .clk); // Memory write
-    D_FF MemReadR0 (.q(MemReadEX), .d(MemReadID), .rst, .clk);    // Memory read
-    D_FF MemToRegR0 (.q(MemToRegEX), .d(MemToRegID), .rst, .clk); // Memory to reg
-    D_FF RegWriteR0 (.q(RegWriteEX), .d(RegWriteID), .rst, .clk); // Register write
-    D_FF ALUSrcR (.q(ALUSrcEX), .d(ALUSrc), .rst, .clk);          // ALU source
-    D_FF ZExtR (.q(ZExtEX), .d(ZExt), .rst, .clk);                // Zero extension
+    D_FF ALUOpR0 (.q(ALUOpEX0), .d(ALUOpID0), .reset(rst), .clk(clk));  // ALU operation bit 0
+    D_FF ALUOpR1 (.q(ALUOpEX1), .d(ALUOpID1), .reset(rst), .clk(clk));  // ALU operation bit 1
+    D_FF flagSetR (.q(SetFlagEX), .d(SetFlagID), .reset(rst), .clk(clk)); // Set flags
+    D_FF MemWriteR0 (.q(MemWriteEX), .d(MemWriteID), .reset(rst), .clk(clk)); // Memory write
+    D_FF MemReadR0 (.q(MemReadEX), .d(MemReadID), .reset(rst), .clk(clk));    // Memory read
+    D_FF MemToRegR0 (.q(MemToRegEX), .d(MemToRegID), .reset(rst), .clk(clk)); // Memory to reg
+    D_FF RegWriteR0 (.q(RegWriteEX), .d(RegWriteID), .reset(rst), .clk(clk)); // Register write
+    D_FF ALUSrcR (.q(ALUSrcEX), .d(ALUSrc), .reset(rst), .clk(clk));          // ALU source
+    D_FF ZExtR (.q(ZExtEX), .d(ZExt), .reset(rst), .clk(clk));                // Zero extension
     
     // Branch control signals propagated to EX stage
-    D_FF UncondBranchR0 (.q(UncondBranchEX), .d(UncondBranch), .rst, .clk);
-    D_FF BRTakenR0 (.q(BRTakenEX), .d(BRTaken), .rst, .clk);
-    D_FF CheckForLTR0 (.q(CheckForLTEX), .d(CheckForLT), .rst, .clk);
-    D_FF BranchLinkR0 (.q(BranchLinkEX), .d(BranchLink), .rst, .clk);
-    D_FF BranchRegisterR0 (.q(BranchRegisterEX), .d(BranchRegister), .rst, .clk);
+    D_FF UncondBranchR0 (.q(UncondBranchEX), .d(UncondBranch), .reset(rst), .clk(clk));
+    D_FF BRTakenR0 (.q(BRTakenEX), .d(BRTaken), .reset(rst), .clk(clk));
+    D_FF CheckForLTR0 (.q(CheckForLTEX), .d(CheckForLT), .reset(rst), .clk(clk));
+    D_FF BranchLinkR0 (.q(BranchLinkEX), .d(BranchLink), .reset(rst), .clk(clk));
+    D_FF BranchRegisterR0 (.q(BranchRegisterEX), .d(BranchRegister), .reset(rst), .clk(clk));
     
     // Data signals propagated from ID to EX stage
-    DFF_N #(5) RnR (.q(RnEX), .d(RnID), .rst, .clk);     // First source reg address
-    DFF_N #(5) RmR (.q(RmEX), .d(RmID), .rst, .clk);     // Second source reg address
-    DFF_N #(5) RdR (.q(RdEX), .d(RdID), .rst, .clk);     // Destination reg address
-    DFF_N #(12) imm12R (.q(imm12EX), .d(imm12ID), .rst, .clk); // 12-bit immediate
-    DFF_N #(9) dAddr9R (.q(dAddr9EX), .d(dAddr9ID), .rst, .clk); // 9-bit address
-    DFF_N #(64) Rd1R (.q(Rd1EX), .d(Rd1ID), .rst, .clk); // Register data 1
-    DFF_N #(64) Rd2R (.q(Rd2EX), .d(Rd2ID), .rst, .clk); // Register data 2
-    DFF_N #(64) PCR0 (.q(PCEX), .d(PCID), .rst, .clk);   // PC value
-    DFF_N #(26) brAddr26R0 (.q(brAddr26EX), .d(brAddr26ID), .rst, .clk); // 26-bit branch addr
-    DFF_N #(19) condAddr19R0 (.q(condAddr19EX), .d(condAddr19ID), .rst, .clk); // 19-bit cond addr
+    DFF_N #(5) RnR (.q(RnEX), .d(RnID), .reset(rst), .clk(clk));     // First source reg address
+    DFF_N #(5) RmR (.q(RmEX), .d(RmID), .reset(rst), .clk(clk));     // Second source reg address
+    DFF_N #(5) RdR (.q(RdEX), .d(RdID), .reset(rst), .clk(clk));     // Destination reg address
+    DFF_N #(12) imm12R (.q(imm12EX), .d(imm12ID), .reset(rst), .clk(clk)); // 12-bit immediate
+    DFF_N #(9) dAddr9R (.q(dAddr9EX), .d(dAddr9ID), .reset(rst), .clk(clk)); // 9-bit address
+    DFF_N #(64) Rd1R (.q(Rd1EX), .d(Rd1ID), .reset(rst), .clk(clk)); // Register data 1
+    DFF_N #(64) Rd2R (.q(Rd2EX), .d(Rd2ID), .reset(rst), .clk(clk)); // Register data 2
+    DFF_N #(64) PCR0 (.q(PCEX), .d(PCID), .reset(rst), .clk(clk));   // PC value
+    DFF_N #(26) brAddr26R0 (.q(brAddr26EX), .d(brAddr26ID), .reset(rst), .clk(clk)); // 26-bit branch addr
+    DFF_N #(19) condAddr19R0 (.q(condAddr19EX), .d(condAddr19ID), .reset(rst), .clk(clk)); // 19-bit cond addr
 
     //==============================================================================
     // PIPELINE REGISTERS: EX/MEM STAGE
     //==============================================================================
     
     // Control signals propagated from EX to MEM stage
-    D_FF MemWriteR1 (.q(MemWriteMem), .d(MemWriteEX), .rst, .clk);  // Memory write
-    D_FF MemReadR1 (.q(MemReadMem), .d(MemReadEX), .rst, .clk);     // Memory read
-    D_FF MemToRegR1 (.q(MemToRegMem), .d(MemToRegEX), .rst, .clk);  // Memory to reg
-    D_FF RegWriteR1 (.q(RegWriteMem), .d(RegWriteEX), .rst, .clk);  // Register write
-    D_FF SetFlagR1 (.q(SetFlagMem), .d(SetFlagEX), .rst, .clk);     // Set flags
+    D_FF MemWriteR1 (.q(MemWriteMem), .d(MemWriteEX), .reset(rst), .clk(clk));  // Memory write
+    D_FF MemReadR1 (.q(MemReadMem), .d(MemReadEX), .reset(rst), .clk(clk));     // Memory read
+    D_FF MemToRegR1 (.q(MemToRegMem), .d(MemToRegEX), .reset(rst), .clk(clk));  // Memory to reg
+    D_FF RegWriteR1 (.q(RegWriteMem), .d(RegWriteEX), .reset(rst), .clk(clk));  // Register write
+    D_FF SetFlagR1 (.q(SetFlagMem), .d(SetFlagEX), .reset(rst), .clk(clk));     // Set flags
     
     // Branch control signals propagated to MEM stage
-    D_FF UncondBranchR1 (.q(UncondBranchMem), .d(UncondBranchEX), .rst, .clk);
-    D_FF BRTakenR1 (.q(BRTakenMem), .d(BRTakenEX), .rst, .clk);
-    D_FF CheckForLTR1 (.q(CheckForLTMem), .d(CheckForLTEX), .rst, .clk);
-    D_FF BranchLinkR1 (.q(BranchLinkMem), .d(BranchLinkEX), .rst, .clk);
-    D_FF BranchRegisterR1 (.q(BranchRegisterMem), .d(BranchRegisterEX), .rst, .clk);
+    D_FF UncondBranchR1 (.q(UncondBranchMem), .d(UncondBranchEX), .reset(rst), .clk(clk));
+    D_FF BRTakenR1 (.q(BRTakenMem), .d(BRTakenEX), .reset(rst), .clk(clk));
+    D_FF CheckForLTR1 (.q(CheckForLTMem), .d(CheckForLTEX), .reset(rst), .clk(clk));
+    D_FF BranchLinkR1 (.q(BranchLinkMem), .d(BranchLinkEX), .reset(rst), .clk(clk));
+    D_FF BranchRegisterR1 (.q(BranchRegisterMem), .d(BranchRegisterEX), .reset(rst), .clk(clk));
     
     // Data signals propagated from EX to MEM stage
-    DFF_N #(5) RdEX_MEM (.q(RdMem), .d(RdEX), .rst, .clk);   // Destination reg
-    DFF_N #(64) ALUResultEX_MEM (.q(ALUResultMem), .d(ALUResultEX), .rst, .clk); // ALU result
-    DFF_N #(64) Rd2EX_MEM (.q(Rd2Mem), .d(Rd2EX), .rst, .clk); // Store data
-    DFF_N #(64) PCR1 (.q(PCMem), .d(PCEX), .rst, .clk);     // PC value
-    DFF_N #(26) brAddr26R1 (.q(brAddr26Mem), .d(brAddr26EX), .rst, .clk); // 26-bit branch addr
-    DFF_N #(19) condAddr19R1 (.q(condAddr19Mem), .d(condAddr19EX), .rst, .clk); // 19-bit cond addr
+    DFF_N #(5) RdEX_MEM (.q(RdMem), .d(RdEX), .reset(rst), .clk(clk));   // Destination reg
+    DFF_N #(64) ALUResultEX_MEM (.q(ALUResultMem), .d(ALUResultEX), .reset(rst), .clk(clk)); // ALU result
+    DFF_N #(64) Rd2EX_MEM (.q(Rd2Mem), .d(Rd2EX), .reset(rst), .clk(clk)); // Store data
+    DFF_N #(64) PCR1 (.q(PCMem), .d(PCEX), .reset(rst), .clk(clk));     // PC value
+    DFF_N #(26) brAddr26R1 (.q(brAddr26Mem), .d(brAddr26EX), .reset(rst), .clk(clk)); // 26-bit branch addr
+    DFF_N #(19) condAddr19R1 (.q(condAddr19Mem), .d(condAddr19EX), .reset(rst), .clk(clk)); // 19-bit cond addr
     
     // ALU flags propagated to MEM stage
-    D_FF alu_zero_R (.q(alu_zero_mem), .d(alu_zero), .rst, .clk);
-    D_FF alu_negative_R (.q(alu_negative_mem), .d(alu_negative), .rst, .clk);
-    D_FF alu_overflow_R (.q(alu_overflow_mem), .d(alu_overflow), .rst, .clk);
-    D_FF alu_carry_R (.q(alu_carry_mem), .d(alu_carry), .rst, .clk);
+    D_FF alu_zero_R (.q(alu_zero_mem), .d(alu_zero), .reset(rst), .clk(clk));
+    D_FF alu_negative_R (.q(alu_negative_mem), .d(alu_negative), .reset(rst), .clk(clk));
+    D_FF alu_overflow_R (.q(alu_overflow_mem), .d(alu_overflow), .reset(rst), .clk(clk));
+    D_FF alu_carry_R (.q(alu_carry_mem), .d(alu_carry), .reset(rst), .clk(clk));
 
     //==============================================================================
     // PIPELINE REGISTERS: MEM/WB STAGE
     //==============================================================================
     
     // Control signals propagated from MEM to WB stage
-    D_FF RegWriteR2 (.q(RegWriteWB), .d(RegWriteMem), .rst, .clk);    // Register write
-    D_FF MemToRegR2 (.q(MemToRegWB), .d(MemToRegMem), .rst, .clk);    // Memory to reg
-    D_FF BranchLinkR2 (.q(BranchLinkWB), .d(BranchLinkMem), .rst, .clk); // Branch link
+    D_FF RegWriteR2 (.q(RegWriteWB), .d(RegWriteMem), .reset(rst), .clk(clk));    // Register write
+    D_FF MemToRegR2 (.q(MemToRegWB), .d(MemToRegMem), .reset(rst), .clk(clk));    // Memory to reg
+    D_FF BranchLinkR2 (.q(BranchLinkWB), .d(BranchLinkMem), .reset(rst), .clk(clk)); // Branch link
     
     // Data signals propagated from MEM to WB stage
-    DFF_N #(5) RdMEM_WB (.q(RdWB), .d(RdMem), .rst, .clk);   // Destination reg
-    DFF_N #(64) ALUResultMEM_WB (.q(ALUResultWB), .d(ALUResultMem), .rst, .clk); // ALU result
-    DFF_N #(64) DataMemOutMEM_WB (.q(DataMemOutWB), .d(DataMemOutMem), .rst, .clk); // Memory data
-    DFF_N #(64) regAddrR (.q(regAddrWB), .d(regAddrMem), .rst, .clk); // PC+4 for branch link
+    DFF_N #(5) RdMEM_WB (.q(RdWB), .d(RdMem), .reset(rst), .clk(clk));   // Destination reg
+    DFF_N #(64) ALUResultMEM_WB (.q(ALUResultWB), .d(ALUResultMem), .reset(rst), .clk(clk)); // ALU result
+    DFF_N #(64) DataMemOutMEM_WB (.q(DataMemOutWB), .d(DataMemOutMem), .reset(rst), .clk(clk)); // Memory data
+    DFF_N #(64) regAddrR (.q(regAddrWB), .d(regAddrMem), .reset(rst), .clk(clk)); // PC+4 for branch link
 
     // Forwarding signals
     logic [1:0] ForwardA, ForwardB;
@@ -208,12 +208,34 @@ module CPU (
     logic [63:0] regAddrWB;
     
     // FORWARDING UNIT
-    ForwardingUnit forwardingUnit (.IDEX_Rn(RnEX), .IDEXRm(RmEX), .EXMEM_Rd(RdMem), .EXMEM_RegWrite(RegWriteMem),
-                                  .MEMWB_Rd(RdWB), .MemWB_RegWrite(RegWriteWB), .ForwardA, .ForwardB);
+    ForwardingUnit forwardingUnit (
+        .IDEX_Rn(RnEX), 
+        .IDEXRm(RmEX), 
+        .EXMEM_Rd(RdMem), 
+        .EXMEM_RegWrite(RegWriteMem),
+        .MEMWB_Rd(RdWB), 
+        .MemWB_RegWrite(RegWriteWB), 
+        .ForwardA(ForwardA), 
+        .ForwardB(ForwardB)
+    );
     
     // FORWARDING MUXES
-    mux4xN_N #(64) ForwardAMux (.i00(Rd1EX), .i01(WriteDataWB), .i10(ALUResultMem), .i11(64'b0), .sel(ForwardA), .out(ForwardAMuxOut));
-    mux4xN_N #(64) ForwardBMux (.i00(ALUBInput), .i01(WriteDataWB), .i10(ALUResultMem), .i11(64'b0), .sel(ForwardB), .out(ForwardBMuxOut));
+    mux4xN_N #(64) ForwardAMux (
+        .i00(Rd1EX), 
+        .i01(WriteDataWB), 
+        .i10(ALUResultMem), 
+        .i11(64'b0), 
+        .sel(ForwardA), 
+        .out(ForwardAMuxOut)
+    );
+    mux4xN_N #(64) ForwardBMux (
+        .i00(ALUBInput), 
+        .i01(WriteDataWB), 
+        .i10(ALUResultMem), 
+        .i11(64'b0), 
+        .sel(ForwardB), 
+        .out(ForwardBMuxOut)
+    );
 
     //==============================================================================
     // BRANCH DECISION LOGIC IN MEM STAGE
@@ -235,7 +257,7 @@ module CPU (
         .out_negative(negative),       // Negative flag output
         .out_overflow(overflow),       // Overflow flag output
         .out_carry(carry_out),         // Carry flag output
-        .clk,                          // Clock
+        .clk(clk),                     // Clock
         .rst(rst),                     // Reset
         .enable(SetFlagMem)            // Flag update enable
     );
@@ -333,8 +355,8 @@ module CPU (
     //==============================================================================
     
     // Pipeline register to pass instruction and PC from IF to ID stage
-    DFF_N #(32) IF_ID_instr (.q(instrID), .d(instrIF), .rst, .clk);
-    DFF_N #(64) IF_ID_PC (.q(PCID), .d(prevPC), .rst, .clk);
+    DFF_N #(32) IF_ID_instr (.q(instrID), .d(instrIF), .reset(rst), .clk(clk));
+    DFF_N #(64) IF_ID_PC (.q(PCID), .d(prevPC), .reset(rst), .clk(clk));
 
     //==============================================================================
     // REGISTER FILE LOGIC

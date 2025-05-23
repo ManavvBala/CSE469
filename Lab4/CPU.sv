@@ -1,5 +1,5 @@
 `timescale 1ns/10ps
-module CPU (
+module CPU1 (
     input logic clk,
     input logic rst
 );
