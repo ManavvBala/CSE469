@@ -11,4 +11,4 @@ output logic [N-1:0] out
     end
   endgenerate 
 
-endmodule 
+endmodule

@@ -8,7 +8,7 @@
 //`define BENCHMARK "./Benchmarks/test03_CbzB.arm"
 //`define BENCHMARK "./Benchmarks/test04_LdurStur.arm"
 //`define BENCHMARK "./Benchmarks/test05_Blt.arm"
-`define BENCHMARK "./Benchmarks/test11_Sort.arm"
+`define BENCHMARK "./Benchmarks/test10_forwarding.arm"
 
 `timescale 1ns/10ps
 

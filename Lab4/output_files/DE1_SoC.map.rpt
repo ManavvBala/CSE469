@@ -1,5 +1,5 @@
 Analysis & Synthesis report for DE1_SoC
-Wed May 07 10:18:10 2025
+Fri May 23 17:55:52 2025
 Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 
 
@@ -38,10 +38,10 @@ agreement for further details.
 +---------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                              ;
 +-----------------------------+---------------------------------------------+
-; Analysis & Synthesis Status ; Failed - Wed May 07 10:18:10 2025           ;
+; Analysis & Synthesis Status ; Failed - Fri May 23 17:55:52 2025           ;
 ; Quartus Prime Version       ; 17.0.0 Build 595 04/25/2017 SJ Lite Edition ;
 ; Revision Name               ; DE1_SoC                                     ;
-; Top-level Entity Name       ; cpustim                                     ;
+; Top-level Entity Name       ; CPU                                         ;
 ; Family                      ; Cyclone V                                   ;
 ; Logic utilization (in ALMs) ; N/A until Partition Merge                   ;
 ; Total registers             ; N/A until Partition Merge                   ;
@@ -59,7 +59,7 @@ agreement for further details.
 ; Option                                                                          ; Setting            ; Default Value      ;
 +---------------------------------------------------------------------------------+--------------------+--------------------+
 ; Device                                                                          ; 5CSEMA5F31C6       ;                    ;
-; Top-level entity name                                                           ; cpustim            ; DE1_SoC            ;
+; Top-level entity name                                                           ; CPU                ; DE1_SoC            ;
 ; Family name                                                                     ; Cyclone V          ; Cyclone V          ;
 ; State Machine Processing                                                        ; User-Encoded       ; Auto               ;
 ; Use smart compilation                                                           ; Off                ; Off                ;
@@ -162,84 +162,110 @@ agreement for further details.
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
-    Info: Processing started: Wed May 07 10:18:05 2025
+    Info: Processing started: Fri May 23 17:55:47 2025
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off DE1_SoC -c DE1_SoC
 Info (20030): Parallel compilation is enabled and will use 16 of the 16 processors detected
 Info (12021): Found 1 design units, including 1 entities, in source file adder_1bit.sv
-    Info (12023): Found entity 1: adder_1bit File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/adder_1bit.sv Line: 3
-Info (12021): Found 1 design units, including 1 entities, in source file alu.sv
-    Info (12023): Found entity 1: alu File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/alu.sv Line: 2
-Info (12021): Found 1 design units, including 1 entities, in source file alu_1bit.sv
-    Info (12023): Found entity 1: alu_1bit File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/alu_1bit.sv Line: 3
-Info (12021): Found 1 design units, including 1 entities, in source file iszero.sv
-    Info (12023): Found entity 1: isZero File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/isZero.sv Line: 2
-Info (12021): Found 1 design units, including 1 entities, in source file mux2_1.sv
-    Info (12023): Found entity 1: mux2_1 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/mux2_1.sv Line: 2
-Info (12021): Found 1 design units, including 1 entities, in source file mux4_1.sv
-    Info (12023): Found entity 1: mux4_1 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/mux4_1.sv Line: 1
-Info (12021): Found 1 design units, including 1 entities, in source file mux8_1.sv
-    Info (12023): Found entity 1: mux8_1 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/mux8_1.sv Line: 1
+    Info (12023): Found entity 1: adder_1bit File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/adder_1bit.sv Line: 3
 Info (12021): Found 1 design units, including 1 entities, in source file adder_64bit.sv
-    Info (12023): Found entity 1: adder_64bit File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/adder_64bit.sv Line: 1
+    Info (12023): Found entity 1: adder_64bit File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/adder_64bit.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file alu.sv
+    Info (12023): Found entity 1: alu File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/alu.sv Line: 2
+Info (12021): Found 1 design units, including 1 entities, in source file alu_1bit.sv
+    Info (12023): Found entity 1: alu_1bit File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/alu_1bit.sv Line: 3
 Info (12021): Found 1 design units, including 1 entities, in source file alustim.sv
-    Info (12023): Found entity 1: alustim File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/alustim.sv Line: 20
+    Info (12023): Found entity 1: alustim File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/alustim.sv Line: 20
 Info (12021): Found 1 design units, including 1 entities, in source file controlunit.sv
-    Info (12023): Found entity 1: ControlUnit File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/ControlUnit.sv Line: 1
-Info (12021): Found 1 design units, including 1 entities, in source file cpu.sv
-    Info (12023): Found entity 1: CPU File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/CPU.sv Line: 2
-Info (12021): Found 2 design units, including 2 entities, in source file datamem.sv
-    Info (12023): Found entity 1: datamem File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/DataMem.sv Line: 12
-    Info (12023): Found entity 2: datamem_testbench File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/DataMem.sv Line: 70
-Info (12021): Found 1 design units, including 1 entities, in source file demux1_2.sv
-    Info (12023): Found entity 1: demux1_2 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/demux1_2.sv Line: 2
-Info (12021): Found 1 design units, including 1 entities, in source file demux2_4.sv
-    Info (12023): Found entity 1: demux2_4 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/demux2_4.sv Line: 1
-Info (12021): Found 1 design units, including 1 entities, in source file demux3_8.sv
-    Info (12023): Found entity 1: demux3_8 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/demux3_8.sv Line: 1
-Info (12021): Found 1 design units, including 1 entities, in source file demux5_32.sv
-    Info (12023): Found entity 1: demux5_32 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/demux5_32.sv Line: 1
-Info (12021): Found 1 design units, including 1 entities, in source file dff.sv
-    Info (12023): Found entity 1: D_FF File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/DFF.sv Line: 1
-Info (12021): Found 1 design units, including 1 entities, in source file dff_enable.sv
-    Info (12023): Found entity 1: DFF_enable File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/DFF_enable.sv Line: 1
-Error (10170): Verilog HDL syntax error at Instructmem.sv(48) near text: "end"; "end" without "begin" . Check for and fix any syntax errors that appear immediately before or at the specified keyword. The Intel FPGA Knowledge Database contains many articles with specific details on how to resolve this error. Visit the Knowledge Database at https://www.altera.com/support/support-resources/knowledge-base/search.html and search for this specific error message number. File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/Instructmem.sv Line: 48
-Error (10112): Ignored design unit "instructmem" at Instructmem.sv(17) due to previous errors File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/Instructmem.sv Line: 17
-Error (10112): Ignored design unit "instructmem_testbench" at Instructmem.sv(61) due to previous errors File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/Instructmem.sv Line: 61
-Info (12021): Found 0 design units, including 0 entities, in source file instructmem.sv
-Info (12021): Found 4 design units, including 4 entities, in source file math.sv
-    Info (12023): Found entity 1: mult File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/math.sv Line: 6
-    Info (12023): Found entity 2: shifter File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/math.sv Line: 36
-    Info (12023): Found entity 3: shifter_testbench File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/math.sv Line: 51
-    Info (12023): Found entity 4: mult_testbench File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/math.sv Line: 71
-Info (12021): Found 1 design units, including 1 entities, in source file mux2xn_n.sv
-    Info (12023): Found entity 1: mux2xN_N File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/mux2xN_N.sv Line: 1
-Info (12021): Found 1 design units, including 1 entities, in source file mux16_1.sv
-    Info (12023): Found entity 1: mux16_1 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/mux16_1.sv Line: 1
-Info (12021): Found 1 design units, including 1 entities, in source file mux32_1.sv
-    Info (12023): Found entity 1: mux32_1 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/mux32_1.sv Line: 1
-Info (12021): Found 1 design units, including 1 entities, in source file mux64x32_1.sv
-    Info (12023): Found entity 1: mux64x32_1 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/mux64x32_1.sv Line: 1
-Info (12021): Found 1 design units, including 1 entities, in source file pc.sv
-    Info (12023): Found entity 1: PC File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/PC.sv Line: 1
-Info (12021): Found 1 design units, including 1 entities, in source file regfile.sv
-    Info (12023): Found entity 1: regfile File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/regfile.sv Line: 1
-Info (12021): Found 1 design units, including 1 entities, in source file register.sv
-    Info (12023): Found entity 1: register File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/register.sv Line: 1
-Info (12021): Found 1 design units, including 1 entities, in source file regstim.sv
-    Info (12023): Found entity 1: regstim File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/regstim.sv Line: 4
+    Info (12023): Found entity 1: ControlUnit File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/ControlUnit.sv Line: 1
 Info (12021): Found 1 design units, including 1 entities, in source file cpustim.sv
-    Info (12023): Found entity 1: cpustim File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/cpustim.sv Line: 2
-Info (144001): Generated suppressed messages file C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/output_files/DE1_SoC.map.smsg
-Error: Quartus Prime Analysis & Synthesis was unsuccessful. 3 errors, 0 warnings
-    Error: Peak virtual memory: 4772 megabytes
-    Error: Processing ended: Wed May 07 10:18:10 2025
+    Info (12023): Found entity 1: cpustim File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/cpustim.sv Line: 2
+Info (12021): Found 2 design units, including 2 entities, in source file datamem.sv
+    Info (12023): Found entity 1: datamem File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/DataMem.sv Line: 12
+    Info (12023): Found entity 2: datamem_testbench File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/DataMem.sv Line: 70
+Info (12021): Found 1 design units, including 1 entities, in source file demux1_2.sv
+    Info (12023): Found entity 1: demux1_2 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/demux1_2.sv Line: 2
+Info (12021): Found 1 design units, including 1 entities, in source file demux2_4.sv
+    Info (12023): Found entity 1: demux2_4 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/demux2_4.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file demux3_8.sv
+    Info (12023): Found entity 1: demux3_8 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/demux3_8.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file demux5_32.sv
+    Info (12023): Found entity 1: demux5_32 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/demux5_32.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file dff.sv
+    Info (12023): Found entity 1: D_FF File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/DFF.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file dff_enable.sv
+    Info (12023): Found entity 1: DFF_enable File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/DFF_enable.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file flag_register.sv
+    Info (12023): Found entity 1: flag_register File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/flag_register.sv Line: 2
+Info (12021): Found 1 design units, including 1 entities, in source file forwardingunit.sv
+    Info (12023): Found entity 1: ForwardingUnit File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/ForwardingUnit.sv Line: 1
+Info (12021): Found 2 design units, including 2 entities, in source file instructmem.sv
+    Info (12023): Found entity 1: instructmem File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/Instructmem.sv Line: 18
+    Info (12023): Found entity 2: instructmem_testbench File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/Instructmem.sv Line: 61
+Info (12021): Found 1 design units, including 1 entities, in source file iszero.sv
+    Info (12023): Found entity 1: isZero File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/isZero.sv Line: 2
+Info (12021): Found 4 design units, including 4 entities, in source file math.sv
+    Info (12023): Found entity 1: mult File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/math.sv Line: 6
+    Info (12023): Found entity 2: shifter File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/math.sv Line: 36
+    Info (12023): Found entity 3: shifter_testbench File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/math.sv Line: 51
+    Info (12023): Found entity 4: mult_testbench File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/math.sv Line: 71
+Info (12021): Found 1 design units, including 1 entities, in source file mux2_1.sv
+    Info (12023): Found entity 1: mux2_1 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/mux2_1.sv Line: 2
+Info (12021): Found 1 design units, including 1 entities, in source file mux2xn_n.sv
+    Info (12023): Found entity 1: mux2xN_N File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/mux2xN_N.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file mux4_1.sv
+    Info (12023): Found entity 1: mux4_1 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/mux4_1.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file mux4xn_n.sv
+    Info (12023): Found entity 1: mux4xN_N File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/mux4xN_N.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file mux8_1.sv
+    Info (12023): Found entity 1: mux8_1 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/mux8_1.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file mux16_1.sv
+    Info (12023): Found entity 1: mux16_1 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/mux16_1.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file mux32_1.sv
+    Info (12023): Found entity 1: mux32_1 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/mux32_1.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file mux64x32_1.sv
+    Info (12023): Found entity 1: mux64x32_1 File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/mux64x32_1.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file pc.sv
+    Info (12023): Found entity 1: PC File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/PC.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file regfile.sv
+    Info (12023): Found entity 1: regfile File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/regfile.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file register.sv
+    Info (12023): Found entity 1: register File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/register.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file regstim.sv
+    Info (12023): Found entity 1: regstim File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/regstim.sv Line: 4
+Info (12021): Found 1 design units, including 1 entities, in source file cpu.sv
+    Info (12023): Found entity 1: CPU File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 2
+Info (12127): Elaborating entity "CPU" for the top level hierarchy
+Info (12128): Elaborating entity "ControlUnit" for hierarchy "ControlUnit:control" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 121
+Info (12128): Elaborating entity "D_FF" for hierarchy "D_FF:ALUOpR0" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 128
+Info (12128): Elaborating entity "ForwardingUnit" for hierarchy "ForwardingUnit:forwardingUnit" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 220
+Info (12128): Elaborating entity "mux4xN_N" for hierarchy "mux4xN_N:ForwardAMux" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 230
+Info (12128): Elaborating entity "mux4_1" for hierarchy "mux4xN_N:ForwardAMux|mux4_1:bitMux[0].m" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/mux4xN_N.sv Line: 10
+Info (12128): Elaborating entity "mux2_1" for hierarchy "mux4xN_N:ForwardAMux|mux4_1:bitMux[0].m|mux2_1:first_stage1" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/mux4_1.sv Line: 8
+Info (12128): Elaborating entity "flag_register" for hierarchy "flag_register:regflag" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 263
+Info (12128): Elaborating entity "DFF_enable" for hierarchy "flag_register:regflag|DFF_enable:zeroDFF" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/flag_register.sv Line: 9
+Info (12128): Elaborating entity "mux2xN_N" for hierarchy "mux2xN_N:condBranchMux" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 274
+Info (12128): Elaborating entity "adder_64bit" for hierarchy "adder_64bit:regAdder" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 296
+Info (12128): Elaborating entity "adder_1bit" for hierarchy "adder_64bit:regAdder|adder_1bit:a1" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/adder_64bit.sv Line: 15
+Info (12128): Elaborating entity "mux2xN_N" for hierarchy "mux2xN_N:ucondMux" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 305
+Info (12128): Elaborating entity "shifter" for hierarchy "shifter:brShifter" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 313
+Info (12128): Elaborating entity "PC" for hierarchy "PC:pc" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 344
+Info (12128): Elaborating entity "instructmem" for hierarchy "instructmem:imem" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 351
+Warning (10175): Verilog HDL warning at Instructmem.sv(25): ignoring unsupported system task File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/Instructmem.sv Line: 25
+Error (10170): Verilog HDL syntax error at test11_Sort.arm(65) near text: _. Check for and fix any syntax errors that appear immediately before or at the specified keyword. The Intel FPGA Knowledge Database contains many articles with specific details on how to resolve this error. Visit the Knowledge Database at https://www.altera.com/support/support-resources/knowledge-base/search.html and search for this specific error message number. File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/Benchmarks/test11_Sort.arm Line: 65
+Info (10648): Verilog HDL Display System Task info at Instructmem.sv(44): Running benchmark:  File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/Instructmem.sv Line: 44
+Info (10648): Verilog HDL Display System Task info at Instructmem.sv(45): First few instructions: File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/Instructmem.sv Line: 45
+Error (12152): Can't elaborate user hierarchy "instructmem:imem" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 351
+Info (144001): Generated suppressed messages file C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/output_files/DE1_SoC.map.smsg
+Error: Quartus Prime Analysis & Synthesis was unsuccessful. 2 errors, 1 warning
+    Error: Peak virtual memory: 4785 megabytes
+    Error: Processing ended: Fri May 23 17:55:52 2025
     Error: Elapsed time: 00:00:05
-    Error: Total CPU time (on all processors): 00:00:11
+    Error: Total CPU time (on all processors): 00:00:12
 
 
 +------------------------------------------+
 ; Analysis & Synthesis Suppressed Messages ;
 +------------------------------------------+
-The suppressed messages can be found in C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3/output_files/DE1_SoC.map.smsg.
+The suppressed messages can be found in C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/output_files/DE1_SoC.map.smsg.
 
 
