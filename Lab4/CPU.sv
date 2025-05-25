@@ -289,12 +289,16 @@ module CPU (
     logic [63:0] nextAddrPreShift, nextAddrPostShift;
     logic [63:0] brAddr, finalPCMuxIntermediate;
     logic [63:0] curPC, prevPC;
-
+    
+    logic [63:0] regAdderOut; // stores the output of PC + 4
     // Calculate PC+4 in MEM stage
+    // MANAV HIGH THINKING: regAdder shouldn't be PCMem, it should be the current PC value
     adder_64bit regAdder (
-        .A(PCMem),
+        // was PCMem
+        .A(prevPC),
         .B(64'd4),
-        .out(regAddrMem)
+        // shouldn't output to regAddrMem, should instead send to some intermediate to eventually get back to currPC
+        .out(regAdderOut)
     );
 
     // Select between unconditional branch address (brAddr26) and conditional address (condAddr19)
@@ -325,7 +329,7 @@ module CPU (
     mux2xN_N #(64) brMux (
         .sel(brSelect),        // Branch selection signal
         .i1(brAddr),           // Branch target address
-        .i0(regAddrMem),       // PC+4
+        .i0(regAdderOut),       // PC+4
         .out(finalPCMuxIntermediate)  // Selected next PC
     );
 
