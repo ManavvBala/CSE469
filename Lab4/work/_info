@@ -10,7 +10,7 @@ cModel Technology
 dC:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3
 vadder_1bit
 Z0 DXx6 sv_std 3 std 0 22 AD7iAPLo6nTIKk<N0eo=D3
-Z1 !s110 1748122015
+Z1 !s110 1748232406
 !i10b 1
 !s100 QH7MEkZ2zaLCeH47KVcUn2
 IdX579_SCD7^Rh79zLYcDj1
@@ -26,7 +26,7 @@ Z5 OV;L;10.5b;63
 r1
 !s85 0
 31
-Z6 !s108 1748122015.000000
+Z6 !s108 1748232406.000000
 !s107 ./adder_1bit.sv|
 !s90 -reportprogress|300|./adder_1bit.sv|
 !i113 1
@@ -151,13 +151,13 @@ vCPU
 R0
 R1
 !i10b 1
-!s100 OJ615ZM2YSN4<ncQ16R;10
-Ik:FSi:QdzcC58gKYaX_321
+!s100 <WgnUl:kn039NJRegz?gk2
+ILB3n3@oN57JEa?RUg8:>Z0
 R2
 !s105 CPU_sv_unit
 S1
 R3
-w1748119810
+w1748232398
 8./CPU.sv
 F./CPU.sv
 L0 2
@@ -173,7 +173,7 @@ R7
 n@c@p@u
 vcpustim
 R0
-Z8 !s110 1748122016
+Z8 !s110 1748232407
 !i10b 1
 !s100 bOoJG=aUD0fi09mfizVXz0
 IXfLYRA@noR_ZV`MiMW_G93
@@ -189,7 +189,7 @@ R5
 r1
 !s85 0
 31
-Z9 !s108 1748122016.000000
+Z9 !s108 1748232407.000000
 !s107 ./cpustim.sv|
 !s90 -reportprogress|300|./cpustim.sv|
 !i113 1
@@ -431,13 +431,13 @@ vForwardingUnit
 R0
 R1
 !i10b 1
-!s100 KJdTAD9O<ePD2HiGg]?4<0
-I4fRS0[Lm5dGfn66M6TT=10
+!s100 ]zG=n6fzDEX1=DDFWbhCX3
+Im>Xf>WZD<HW[k`]iW1lL60
 R2
 !s105 ForwardingUnit_sv_unit
 S1
 R3
-w1748047961
+w1748231783
 8./ForwardingUnit.sv
 F./ForwardingUnit.sv
 L0 1
@@ -453,7 +453,7 @@ R7
 n@forwarding@unit
 vinstructmem
 R0
-R8
+R1
 !i10b 1
 !s100 CcAGUo`H4SV0UA3;c;`zS1
 I8`99Gm_kFi]8CM4gbe`h>3
@@ -469,14 +469,14 @@ R5
 r1
 !s85 0
 31
-R9
+R6
 Z20 !s107 ./Instructmem.sv|
 Z21 !s90 -reportprogress|300|./Instructmem.sv|
 !i113 1
 R7
 vinstructmem_testbench
 R0
-R8
+R1
 !i10b 1
 !s100 j<3NZYN:LkKiEWZ=hT7661
 IJ8n0Y2ofHGRoUMg`GcORf0
@@ -492,7 +492,7 @@ R5
 r1
 !s85 0
 31
-R9
+R6
 R20
 R21
 !i113 1

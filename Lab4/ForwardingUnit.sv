@@ -4,7 +4,7 @@ module ForwardingUnit (
     input logic EXMEM_RegWrite,
     input logic [4:0] MEMWB_Rd,
     input logic MEMWB_RegWrite,
-    output logic [1:0] ForwardA, ForwardB
+    output logic [1:0] ForwardA, ForwardB, ForwardStore
 );
     always_comb begin
         // default
@@ -29,6 +29,14 @@ module ForwardingUnit (
         // MEM Hazard
         else if ((MEMWB_RegWrite) & (MEMWB_Rd != 5'd31) & !(EXMEM_RegWrite & (EXMEM_Rd != 5'd31)) & (EXMEM_Rd != IDEX_Rm) & (MEMWB_Rd == IDEX_Rm)) begin
             ForwardB = 2'b01;
+        end
+		
+			// store forwarding
+        if ((EXMEM_RegWrite) & (EXMEM_Rd != 5'd31) & (EXMEM_Rd == IDEX_Rm)) begin
+            ForwardStore = 2'b10;  // Forward from EX/MEM stage
+        end
+        else if ((MEMWB_RegWrite) & (MEMWB_Rd != 5'd31) & (MEMWB_Rd == IDEX_Rm)) begin
+            ForwardStore = 2'b01;  // Forward from MEM/WB stage
         end
 
     end

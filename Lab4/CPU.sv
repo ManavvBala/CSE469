@@ -76,6 +76,7 @@ module CPU (
     // PC and address calculation signals
     logic [63:0] PCID, PCEX, PCMem;   // PC values through pipeline
     logic [63:0] regAddrMem;          // PC+4 for branch and link in MEM stage
+	 // 
     
     //==============================================================================
     // INSTRUCTION DECODE
@@ -105,7 +106,7 @@ module CPU (
         .carry_out(1'b0),              // Not needed for control generation
         .Reg2Loc(Reg2Loc),             // Output: Register addressing mode
         .UncondBranch(UncondBranch),   // Output: Unconditional branch control
-        .BRTaken(BRTaken),             // Output: Branch taken
+        .BRTaken(BRTaken),             // Output: Bra	nch taken
         .MemRead(MemReadID),           // Output: Memory read enable
         .MemToReg(MemToRegID),         // Output: Memory to register bypass
         .ALUOp0(ALUOpID0),             // Output: ALU operation bit 0
@@ -200,6 +201,8 @@ module CPU (
     logic [63:0] ForwardAMuxOut, ForwardBMuxOut;
     logic [63:0] ALUBInput;
     logic [63:0] regAddrWB;
+	 logic [1:0] ForwardStore;
+    logic [63:0] ForwardedStoreData;
     
     // Data signals propagated from MEM to WB stage
     DFF_N #(5) RdMEM_WB (.q(RdWB), .d(RdMem), .reset(rst), .clk(clk));   // Destination reg
@@ -218,7 +221,9 @@ module CPU (
         .MEMWB_Rd(RdWB), 
         .MEMWB_RegWrite(RegWriteWB), 
         .ForwardA(ForwardA), 
-        .ForwardB(ForwardB)
+        .ForwardB(ForwardB),
+		  .ForwardStore(ForwardStore)
+
     );
     
     // FORWARDING MUXES
@@ -231,12 +236,22 @@ module CPU (
         .out(ForwardAMuxOut)
     );
     mux4xN_N #(64) ForwardBMux (
-        .i00(ALUBInput), 
+        .i00(Rd2EX), 
         .i01(WriteDataWB), 
         .i10(ALUResultMem), 
         .i11(64'b0), 
         .sel(ForwardB), 
         .out(ForwardBMuxOut)
+    );
+	 
+    
+    mux4xN_N #(64) StoreDataForwardMux (
+        .i00(Rd2Mem),           // Original store data (no forwarding)
+        .i01(WriteDataWB),      // Forward from WB stage
+        .i10(ALUResultMem),     // Forward from MEM stage
+        .i11(64'b0),            // Unused
+        .sel(ForwardStore),     // Store forwarding control
+        .out(ForwardedStoreData) // Forwarded store data
     );
 
     //==============================================================================
@@ -412,6 +427,9 @@ module CPU (
         .ReadData1(Rd1ID),        // First source register value
         .ReadData2(Rd2ID)         // Second source register value
     );
+	 
+	 assign regAddrMem = regAdderOut;  // PC+4 for branch and link
+
 
     //==============================================================================
     // ALU LOGIC
@@ -430,7 +448,7 @@ module CPU (
     // Choose between register or immediate for ALU B input
     mux2xN_N #(64) alusrcmux (
         .i1(AluImmMuxOut),  // Immediate value
-        .i0(Rd2EX),         // Register value
+        .i0(ForwardBMuxOut),         // Register value
         .sel(ALUSrcEX),     // ALU source control
         .out(ALUBInput)     // Selected ALU B input
     );
@@ -438,7 +456,7 @@ module CPU (
     // Main ALU - performs arithmetic and logic operations
     alu mainAlu (
         .A(ForwardAMuxOut),              // First operand (with forwarding)
-        .B(ForwardBMuxOut),              // Second operand (with forwarding)
+        .B(ALUBInput),              // Second operand (with forwarding)
         .cntrl({1'b0, ALUOpEX1, ALUOpEX0}), // ALU operation code
         .result(ALUResultEX),            // ALU result
         .negative(alu_negative),         // Negative flag
@@ -456,7 +474,7 @@ module CPU (
         .address(ALUResultMem),     // Memory address
         .write_enable(MemWriteMem), // Memory write enable
         .read_enable(MemReadMem),   // Memory read enable
-        .write_data(Rd2Mem),        // Data to write
+        .write_data(ForwardedStoreData),        // Data to write
         .clk(clk),                  // Clock
         .read_data(DataMemOutMem),  // Data read from memory
         .xfer_size(4'd8)            // Transfer size (8 bytes)
