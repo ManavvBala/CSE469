@@ -77,12 +77,6 @@ module CPU (
     logic [63:0] PCID, PCEX, PCMem;   // PC values through pipeline
     logic [63:0] regAddrMem;          // PC+4 for branch and link in MEM stage
     
-    // Forwarding signals (updated to match working implementation)
-    logic [1:0] ForwardA, ForwardB, ForwardStore;
-    logic [63:0] ForwardAMuxOut, ForwardBMuxOut, ForwardStoreMuxOut;
-    logic [63:0] ALUBInput;
-    logic [63:0] regAddrWB;
-    
     //==============================================================================
     // INSTRUCTION DECODE
     //==============================================================================
@@ -181,7 +175,7 @@ module CPU (
     // Data signals propagated from EX to MEM stage
     DFF_N #(5) RdEX_MEM (.q(RdMem), .d(RdEX), .reset(rst), .clk(clk));   // Destination reg
     DFF_N #(64) ALUResultEX_MEM (.q(ALUResultMem), .d(ALUResultEX), .reset(rst), .clk(clk)); // ALU result
-    DFF_N #(64) Rd2EX_MEM (.q(Rd2Mem), .d(ForwardStoreMuxOut), .reset(rst), .clk(clk)); // Store data (forwarded)
+    DFF_N #(64) Rd2EX_MEM (.q(Rd2Mem), .d(Rd2EX), .reset(rst), .clk(clk)); // Store data
     DFF_N #(64) PCR1 (.q(PCMem), .d(PCEX), .reset(rst), .clk(clk));     // PC value
     DFF_N #(26) brAddr26R1 (.q(brAddr26Mem), .d(brAddr26EX), .reset(rst), .clk(clk)); // 26-bit branch addr
     DFF_N #(19) condAddr19R1 (.q(condAddr19Mem), .d(condAddr19EX), .reset(rst), .clk(clk)); // 19-bit cond addr
@@ -200,6 +194,12 @@ module CPU (
     D_FF RegWriteR2 (.q(RegWriteWB), .d(RegWriteMem), .reset(rst), .clk(clk));    // Register write
     D_FF MemToRegR2 (.q(MemToRegWB), .d(MemToRegMem), .reset(rst), .clk(clk));    // Memory to reg
     D_FF BranchLinkR2 (.q(BranchLinkWB), .d(BranchLinkMem), .reset(rst), .clk(clk)); // Branch link
+	 
+	 // Forwarding signals
+    logic [1:0] ForwardA, ForwardB;
+    logic [63:0] ForwardAMuxOut, ForwardBMuxOut;
+    logic [63:0] ALUBInput;
+    logic [63:0] regAddrWB;
     
     // Data signals propagated from MEM to WB stage
     DFF_N #(5) RdMEM_WB (.q(RdWB), .d(RdMem), .reset(rst), .clk(clk));   // Destination reg
@@ -207,10 +207,9 @@ module CPU (
     DFF_N #(64) DataMemOutMEM_WB (.q(DataMemOutWB), .d(DataMemOutMem), .reset(rst), .clk(clk)); // Memory data
     DFF_N #(64) regAddrR (.q(regAddrWB), .d(regAddrMem), .reset(rst), .clk(clk)); // PC+4 for branch link
 
-    //==============================================================================
-    // FORWARDING UNIT (UPDATED TO MATCH WORKING IMPLEMENTATION)
-    //==============================================================================
+
     
+    // FORWARDING UNIT
     ForwardingUnit forwardingUnit (
         .IDEX_Rn(RnEX), 
         .IDEX_Rm(RmEX), 
@@ -219,44 +218,36 @@ module CPU (
         .MEMWB_Rd(RdWB), 
         .MEMWB_RegWrite(RegWriteWB), 
         .ForwardA(ForwardA), 
-        .ForwardB(ForwardB),
-        .ForwardStore(ForwardStore)
+        .ForwardB(ForwardB)
     );
     
-    //==============================================================================
-    // FORWARDING MUXES (UPDATED TO MATCH WORKING IMPLEMENTATION)
-    //==============================================================================
-    
-    // Forward A (for first ALU operand)
+    // FORWARDING MUXES
     mux4xN_N #(64) ForwardAMux (
-        .i00(Rd1EX), 
-        .i01(WriteDataWB), 
-        .i10(ALUResultMem), 
-        .i11(64'b0), 
-        .sel(ForwardA), 
-        .out(ForwardAMuxOut)
+    .i00(Rd1EX), 
+    .i01(WriteDataWB), 
+    .i10(ALUResultMem), 
+    .i11(64'b0), 
+    .sel(ForwardA), 
+    .out(ForwardAMuxOut)
     );
-    
-    // Forward B (for second ALU operand)
+
+    // FIXED: Use Rd2EX instead of ALUBInput for proper store forwarding
     mux4xN_N #(64) ForwardBMux (
-        .i00(Rd2EX), 
+        .i00(Rd2EX),        // Changed from ALUBInput to Rd2EX
         .i01(WriteDataWB), 
         .i10(ALUResultMem), 
         .i11(64'b0), 
         .sel(ForwardB), 
         .out(ForwardBMuxOut)
     );
-    
-    // Forward Store (for store data - separate from ALU forwarding)
-    mux4xN_N #(64) ForwardStoreMux (
-        .i00(Rd2EX), 
-        .i01(WriteDataWB), 
-        .i10(ALUResultMem), 
-        .i11(64'b0), 
-        .sel(ForwardStore), 
-        .out(ForwardStoreMuxOut)
-    );
 
+// Then use ForwardBMuxOut in the ALU source mux instead of Rd2EX
+mux2xN_N #(64) alusrcmux (
+    .i1(AluImmMuxOut),     // Immediate value
+    .i0(ForwardBMuxOut),   // Changed from Rd2EX to ForwardBMuxOut
+    .sel(ALUSrcEX),        // ALU source control
+    .out(ALUBInput)        // Selected ALU B input
+);
     //==============================================================================
     // BRANCH DECISION LOGIC IN MEM STAGE
     //==============================================================================
@@ -309,11 +300,13 @@ module CPU (
     logic [63:0] curPC, prevPC;
     
     logic [63:0] regAdderOut; // stores the output of PC + 4
-    
     // Calculate PC+4 in MEM stage
+    // MANAV HIGH THINKING: regAdder shouldn't be PCMem, it should be the current PC value
     adder_64bit regAdder (
+        // was PCMem
         .A(prevPC),
         .B(64'd4),
+        // shouldn't output to regAddrMem, should instead send to some intermediate to eventually get back to currPC
         .out(regAdderOut)
     );
 
@@ -384,7 +377,7 @@ module CPU (
     // REGISTER FILE LOGIC
     //==============================================================================
     
-    // Select between Rd and Rm as second register to read (reverted to original)
+    // Select between Rd and Rm as second register to read
     logic [4:0] Ab;
     mux2xN_N #(5) reglocmux (
         .i1(RmID),        // Second source register (Rm)
@@ -428,8 +421,6 @@ module CPU (
         .ReadData1(Rd1ID),        // First source register value
         .ReadData2(Rd2ID)         // Second source register value
     );
-    
-    assign regAddrMem = regAdderOut;  // PC+4 for branch and link
 
     //==============================================================================
     // ALU LOGIC
@@ -445,18 +436,11 @@ module CPU (
         .out(AluImmMuxOut)                 // Extended immediate
     );
 
-    // Choose between register or immediate for ALU B input
-    mux2xN_N #(64) alusrcmux (
-        .i1(AluImmMuxOut),    // Immediate value
-        .i0(ForwardBMuxOut),  // Register value (forwarded)
-        .sel(ALUSrcEX),       // ALU source control
-        .out(ALUBInput)       // Selected ALU B input
-    );
 
     // Main ALU - performs arithmetic and logic operations
     alu mainAlu (
         .A(ForwardAMuxOut),              // First operand (with forwarding)
-        .B(ALUBInput),                   // Second operand (with forwarding)
+        .B(ALUBInput),              // Second operand (with forwarding)
         .cntrl({1'b0, ALUOpEX1, ALUOpEX0}), // ALU operation code
         .result(ALUResultEX),            // ALU result
         .negative(alu_negative),         // Negative flag
@@ -469,12 +453,12 @@ module CPU (
     // MEMORY STAGE
     //==============================================================================
     
-    // Data Memory - uses the already-forwarded store data
+    // Data Memory
     datamem dataMemory (
         .address(ALUResultMem),     // Memory address
         .write_enable(MemWriteMem), // Memory write enable
         .read_enable(MemReadMem),   // Memory read enable
-        .write_data(Rd2Mem),        // Data to write (already forwarded in EX stage)
+        .write_data(Rd2Mem),        // Data to write
         .clk(clk),                  // Clock
         .read_data(DataMemOutMem),  // Data read from memory
         .xfer_size(4'd8)            // Transfer size (8 bytes)
