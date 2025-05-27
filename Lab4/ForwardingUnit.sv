@@ -10,6 +10,7 @@ module ForwardingUnit (
         // default
         ForwardA = 2'b00;
         ForwardB = 2'b00;
+        ForwardStore = 2'b00;
 
         // A Hazard
         // EX Hazard
