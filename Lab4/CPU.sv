@@ -210,16 +210,28 @@ module CPU (
 
     
     // FORWARDING UNIT
-    ForwardingUnit forwardingUnit (
-        .IDEX_Rn(RnEX), 
-        .IDEX_Rm(RmEX), 
-        .EXMEM_Rd(RdMem), 
-        .EXMEM_RegWrite(RegWriteMem),
-        .MEMWB_Rd(RdWB), 
-        .MEMWB_RegWrite(RegWriteWB), 
-        .ForwardA(ForwardA), 
-        .ForwardB(ForwardB)
-    );
+    // ForwardingUnit forwardingUnit (
+    //     .IDEX_Rn(RnEX), 
+    //     .IDEX_Rm(RmEX), 
+    //     .EXMEM_Rd(RdMem), 
+    //     .EXMEM_RegWrite(RegWriteMem),
+    //     .MEMWB_Rd(RdWB), 
+    //     .MEMWB_RegWrite(RegWriteWB), 
+    //     .ForwardA(ForwardA), 
+    //     .ForwardB(ForwardB)
+    // );
+    // In your CPU module, update the forwarding unit instantiation:
+ForwardingUnit forwardingUnit (
+    .IDEX_Rn(RnEX), 
+    .IDEX_Rm(RmEX),
+    .IDEX_Rd(RdEX),              // ADD THIS LINE
+    .EXMEM_Rd(RdMem), 
+    .EXMEM_RegWrite(RegWriteMem),
+    .MEMWB_Rd(RdWB), 
+    .MEMWB_RegWrite(RegWriteWB), 
+    .ForwardA(ForwardA), 
+    .ForwardB(ForwardB)
+);
     
     // FORWARDING MUXES
     mux4xN_N #(64) ForwardAMux (
