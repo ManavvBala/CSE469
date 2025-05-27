@@ -28,11 +28,6 @@ module CPU (
     logic negative, zero, overflow, carry_out;
     logic alu_zero, alu_negative, alu_overflow, alu_carry;
     
-    // **NEW: Flag forwarding signals**
-    logic flag_forward_enable;
-    logic forwarded_zero, forwarded_negative, forwarded_overflow, forwarded_carry;
-    logic final_zero, final_negative, final_overflow, final_carry;
-    
     // Control signals in ID stage
     logic Reg2Loc;        // 0: Rd as second reg, 1: Rm as second reg
     logic UncondBranch;   // 1: Unconditional branch
@@ -81,10 +76,7 @@ module CPU (
     // PC and address calculation signals
     logic [63:0] PCID, PCEX, PCMem;   // PC values through pipeline
     logic [63:0] regAddrMem;          // PC+4 for branch and link in MEM stage
-    
-    // **NEW: Pipeline flushing signals**
-    logic flush_IF_ID, flush_ID_EX;
-    logic branch_taken_actual;
+	 // 
     
     //==============================================================================
     // INSTRUCTION DECODE
@@ -114,7 +106,7 @@ module CPU (
         .carry_out(1'b0),              // Not needed for control generation
         .Reg2Loc(Reg2Loc),             // Output: Register addressing mode
         .UncondBranch(UncondBranch),   // Output: Unconditional branch control
-        .BRTaken(BRTaken),             // Output: Branch taken
+        .BRTaken(BRTaken),             // Output: Bra	nch taken
         .MemRead(MemReadID),           // Output: Memory read enable
         .MemToReg(MemToRegID),         // Output: Memory to register bypass
         .ALUOp0(ALUOpID0),             // Output: ALU operation bit 0
@@ -130,55 +122,38 @@ module CPU (
     );
 
     //==============================================================================
-    // **NEW: FLAG FORWARDING LOGIC**
-    //==============================================================================
-    
-    // Flag forwarding: Forward ALU flags from EX stage to MEM stage for immediate use
-    assign flag_forward_enable = SetFlagEX;
-    assign forwarded_zero = flag_forward_enable ? alu_zero : alu_zero_mem;
-    assign forwarded_negative = flag_forward_enable ? alu_negative : alu_negative_mem;
-    assign forwarded_overflow = flag_forward_enable ? alu_overflow : alu_overflow_mem;
-    assign forwarded_carry = flag_forward_enable ? alu_carry : alu_carry_mem;
-    
-    // Select between forwarded flags and register flags
-    assign final_zero = flag_forward_enable ? forwarded_zero : zero;
-    assign final_negative = flag_forward_enable ? forwarded_negative : negative;
-    assign final_overflow = flag_forward_enable ? forwarded_overflow : overflow;
-    assign final_carry = flag_forward_enable ? forwarded_carry : carry_out;
-
-    //==============================================================================
     // PIPELINE REGISTERS: ID/EX STAGE
     //==============================================================================
     
     // Control signals propagated from ID to EX stage
-    D_FF ALUOpR0 (.q(ALUOpEX0), .d(flush_ID_EX ? 1'b0 : ALUOpID0), .reset(rst), .clk(clk));  // ALU operation bit 0
-    D_FF ALUOpR1 (.q(ALUOpEX1), .d(flush_ID_EX ? 1'b0 : ALUOpID1), .reset(rst), .clk(clk));  // ALU operation bit 1
-    D_FF flagSetR (.q(SetFlagEX), .d(flush_ID_EX ? 1'b0 : SetFlagID), .reset(rst), .clk(clk)); // Set flags
-    D_FF MemWriteR0 (.q(MemWriteEX), .d(flush_ID_EX ? 1'b0 : MemWriteID), .reset(rst), .clk(clk)); // Memory write
-    D_FF MemReadR0 (.q(MemReadEX), .d(flush_ID_EX ? 1'b0 : MemReadID), .reset(rst), .clk(clk));    // Memory read
-    D_FF MemToRegR0 (.q(MemToRegEX), .d(flush_ID_EX ? 1'b0 : MemToRegID), .reset(rst), .clk(clk)); // Memory to reg
-    D_FF RegWriteR0 (.q(RegWriteEX), .d(flush_ID_EX ? 1'b0 : RegWriteID), .reset(rst), .clk(clk)); // Register write
-    D_FF ALUSrcR (.q(ALUSrcEX), .d(flush_ID_EX ? 1'b0 : ALUSrc), .reset(rst), .clk(clk));          // ALU source
-    D_FF ZExtR (.q(ZExtEX), .d(flush_ID_EX ? 1'b0 : ZExt), .reset(rst), .clk(clk));                // Zero extension
+    D_FF ALUOpR0 (.q(ALUOpEX0), .d(ALUOpID0), .reset(rst), .clk(clk));  // ALU operation bit 0
+    D_FF ALUOpR1 (.q(ALUOpEX1), .d(ALUOpID1), .reset(rst), .clk(clk));  // ALU operation bit 1
+    D_FF flagSetR (.q(SetFlagEX), .d(SetFlagID), .reset(rst), .clk(clk)); // Set flags
+    D_FF MemWriteR0 (.q(MemWriteEX), .d(MemWriteID), .reset(rst), .clk(clk)); // Memory write
+    D_FF MemReadR0 (.q(MemReadEX), .d(MemReadID), .reset(rst), .clk(clk));    // Memory read
+    D_FF MemToRegR0 (.q(MemToRegEX), .d(MemToRegID), .reset(rst), .clk(clk)); // Memory to reg
+    D_FF RegWriteR0 (.q(RegWriteEX), .d(RegWriteID), .reset(rst), .clk(clk)); // Register write
+    D_FF ALUSrcR (.q(ALUSrcEX), .d(ALUSrc), .reset(rst), .clk(clk));          // ALU source
+    D_FF ZExtR (.q(ZExtEX), .d(ZExt), .reset(rst), .clk(clk));                // Zero extension
     
     // Branch control signals propagated to EX stage
-    D_FF UncondBranchR0 (.q(UncondBranchEX), .d(flush_ID_EX ? 1'b0 : UncondBranch), .reset(rst), .clk(clk));
-    D_FF BRTakenR0 (.q(BRTakenEX), .d(flush_ID_EX ? 1'b0 : BRTaken), .reset(rst), .clk(clk));
-    D_FF CheckForLTR0 (.q(CheckForLTEX), .d(flush_ID_EX ? 1'b0 : CheckForLT), .reset(rst), .clk(clk));
-    D_FF BranchLinkR0 (.q(BranchLinkEX), .d(flush_ID_EX ? 1'b0 : BranchLink), .reset(rst), .clk(clk));
-    D_FF BranchRegisterR0 (.q(BranchRegisterEX), .d(flush_ID_EX ? 1'b0 : BranchRegister), .reset(rst), .clk(clk));
+    D_FF UncondBranchR0 (.q(UncondBranchEX), .d(UncondBranch), .reset(rst), .clk(clk));
+    D_FF BRTakenR0 (.q(BRTakenEX), .d(BRTaken), .reset(rst), .clk(clk));
+    D_FF CheckForLTR0 (.q(CheckForLTEX), .d(CheckForLT), .reset(rst), .clk(clk));
+    D_FF BranchLinkR0 (.q(BranchLinkEX), .d(BranchLink), .reset(rst), .clk(clk));
+    D_FF BranchRegisterR0 (.q(BranchRegisterEX), .d(BranchRegister), .reset(rst), .clk(clk));
     
     // Data signals propagated from ID to EX stage
-    DFF_N #(5) RnR (.q(RnEX), .d(flush_ID_EX ? 5'b0 : RnID), .reset(rst), .clk(clk));     // First source reg address
-    DFF_N #(5) RmR (.q(RmEX), .d(flush_ID_EX ? 5'b0 : RmID), .reset(rst), .clk(clk));     // Second source reg address
-    DFF_N #(5) RdR (.q(RdEX), .d(flush_ID_EX ? 5'b0 : RdID), .reset(rst), .clk(clk));     // Destination reg address
-    DFF_N #(12) imm12R (.q(imm12EX), .d(flush_ID_EX ? 12'b0 : imm12ID), .reset(rst), .clk(clk)); // 12-bit immediate
-    DFF_N #(9) dAddr9R (.q(dAddr9EX), .d(flush_ID_EX ? 9'b0 : dAddr9ID), .reset(rst), .clk(clk)); // 9-bit address
-    DFF_N #(64) Rd1R (.q(Rd1EX), .d(flush_ID_EX ? 64'b0 : Rd1ID), .reset(rst), .clk(clk)); // Register data 1
-    DFF_N #(64) Rd2R (.q(Rd2EX), .d(flush_ID_EX ? 64'b0 : Rd2ID), .reset(rst), .clk(clk)); // Register data 2
-    DFF_N #(64) PCR0 (.q(PCEX), .d(flush_ID_EX ? 64'b0 : PCID), .reset(rst), .clk(clk));   // PC value
-    DFF_N #(26) brAddr26R0 (.q(brAddr26EX), .d(flush_ID_EX ? 26'b0 : brAddr26ID), .reset(rst), .clk(clk)); // 26-bit branch addr
-    DFF_N #(19) condAddr19R0 (.q(condAddr19EX), .d(flush_ID_EX ? 19'b0 : condAddr19ID), .reset(rst), .clk(clk)); // 19-bit cond addr
+    DFF_N #(5) RnR (.q(RnEX), .d(RnID), .reset(rst), .clk(clk));     // First source reg address
+    DFF_N #(5) RmR (.q(RmEX), .d(RmID), .reset(rst), .clk(clk));     // Second source reg address
+    DFF_N #(5) RdR (.q(RdEX), .d(RdID), .reset(rst), .clk(clk));     // Destination reg address
+    DFF_N #(12) imm12R (.q(imm12EX), .d(imm12ID), .reset(rst), .clk(clk)); // 12-bit immediate
+    DFF_N #(9) dAddr9R (.q(dAddr9EX), .d(dAddr9ID), .reset(rst), .clk(clk)); // 9-bit address
+    DFF_N #(64) Rd1R (.q(Rd1EX), .d(Rd1ID), .reset(rst), .clk(clk)); // Register data 1
+    DFF_N #(64) Rd2R (.q(Rd2EX), .d(Rd2ID), .reset(rst), .clk(clk)); // Register data 2
+    DFF_N #(64) PCR0 (.q(PCEX), .d(PCID), .reset(rst), .clk(clk));   // PC value
+    DFF_N #(26) brAddr26R0 (.q(brAddr26EX), .d(brAddr26ID), .reset(rst), .clk(clk)); // 26-bit branch addr
+    DFF_N #(19) condAddr19R0 (.q(condAddr19EX), .d(condAddr19ID), .reset(rst), .clk(clk)); // 19-bit cond addr
 
     //==============================================================================
     // PIPELINE REGISTERS: EX/MEM STAGE
@@ -247,10 +222,8 @@ module CPU (
         .MEMWB_RegWrite(RegWriteWB), 
         .ForwardA(ForwardA), 
         .ForwardB(ForwardB),
-        .ForwardStore(ForwardStore),
-        // NEW: Pass control signals for instruction context
-        .ALUSrcEX(ALUSrcEX),
-        .Reg2LocID(Reg2Loc)
+		  .ForwardStore(ForwardStore)
+
     );
     
     // FORWARDING MUXES
@@ -285,7 +258,7 @@ module CPU (
     // BRANCH DECISION LOGIC IN MEM STAGE
     //==============================================================================
     
-    // Branch condition logic in MEM stage using forwarded flags
+    // Branch condition logic in MEM stage using propagated flags
     logic brSelect;
     logic negativeSelect;
     logic condBranchResult;
@@ -306,13 +279,12 @@ module CPU (
         .enable(SetFlagMem)            // Flag update enable
     );
 
-    // **MODIFIED: Use forwarded flags for branch decisions**
     // XOR of negative and overflow flags for less-than comparison
-    xor #(50ps) xorCheck (negativeSelect, final_negative, final_overflow);
+    xor #(50ps) xorCheck (negativeSelect, negative, overflow);
     
     // Select branch condition: zero or (negative XOR overflow)
     mux2xN_N #(1) condBranchMux (
-        .i0(final_zero),               // Zero flag (possibly forwarded)
+        .i0(zero),               // Zero flag
         .i1(negativeSelect),     // Less than condition
         .sel(CheckForLTMem),     // Select less than check
         .out(temp)               // Condition result
@@ -323,17 +295,6 @@ module CPU (
     
     // OR unconditional branch with conditional result
     or #(50ps) BranchOR (brSelect, UncondBranchMem, condBranchResult);
-    
-    // **NEW: Track actual branch taken for flushing**
-    assign branch_taken_actual = brSelect;
-
-    //==============================================================================
-    // **NEW: PIPELINE FLUSHING LOGIC**
-    //==============================================================================
-    
-    // Flush IF/ID and ID/EX stages when branch is taken
-    assign flush_IF_ID = branch_taken_actual;
-    assign flush_ID_EX = branch_taken_actual;
 
     //==============================================================================
     // PROGRAM COUNTER LOGIC
@@ -414,10 +375,9 @@ module CPU (
     // IF/ID PIPELINE REGISTER
     //==============================================================================
     
-    // **MODIFIED: Pipeline register with flushing capability**
     // Pipeline register to pass instruction and PC from IF to ID stage
-    DFF_N #(32) IF_ID_instr (.q(instrID), .d(flush_IF_ID ? 32'b0 : instrIF), .reset(rst), .clk(clk));
-    DFF_N #(64) IF_ID_PC (.q(PCID), .d(flush_IF_ID ? 64'b0 : prevPC), .reset(rst), .clk(clk));
+    DFF_N #(32) IF_ID_instr (.q(instrID), .d(instrIF), .reset(rst), .clk(clk));
+    DFF_N #(64) IF_ID_PC (.q(PCID), .d(prevPC), .reset(rst), .clk(clk));
 
     //==============================================================================
     // REGISTER FILE LOGIC
@@ -468,7 +428,7 @@ module CPU (
         .ReadData2(Rd2ID)         // Second source register value
     );
 	 
-	 assign regAddrMem = linkAddr;  // PC+4 for branch and link
+	 assign regAddrMem = regAdderOut;  // PC+4 for branch and link
 
 
     //==============================================================================
