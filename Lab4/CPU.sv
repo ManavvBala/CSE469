@@ -181,7 +181,7 @@ module CPU (
     // Data signals propagated from EX to MEM stage
     DFF_N #(5) RdEX_MEM (.q(RdMem), .d(RdEX), .reset(rst), .clk(clk));   // Destination reg
     DFF_N #(64) ALUResultEX_MEM (.q(ALUResultMem), .d(ALUResultEX), .reset(rst), .clk(clk)); // ALU result
-    DFF_N #(64) Rd2EX_MEM (.q(Rd2Mem), .d(ForwardAMuxOut), .reset(rst), .clk(clk)); // Store data (forwarded from Rn)
+    DFF_N #(64) Rd2EX_MEM (.q(Rd2Mem), .d(ForwardBMuxOut), .reset(rst), .clk(clk)); // Store data from second register
     DFF_N #(64) PCR1 (.q(PCMem), .d(PCEX), .reset(rst), .clk(clk));     // PC value
     DFF_N #(26) brAddr26R1 (.q(brAddr26Mem), .d(brAddr26EX), .reset(rst), .clk(clk)); // 26-bit branch addr
     DFF_N #(19) condAddr19R1 (.q(condAddr19Mem), .d(condAddr19EX), .reset(rst), .clk(clk)); // 19-bit cond addr
@@ -374,12 +374,13 @@ module CPU (
     //==============================================================================
     
     // Select between Rd and Rm as second register to read
+    // Special case: STUR needs to read store data from RdID regardless of Reg2Loc
     logic [4:0] Ab;
     mux2xN_N #(5) reglocmux (
-        .i1(RmID),        // Second source register (Rm)
-        .i0(RdID),        // Destination register (Rd)
-        .sel(Reg2Loc),    // Register selection control
-        .out(Ab)          // Selected register address
+        .i1(MemWriteID ? RdID : RmID),  // STUR uses RdID (store data), others use RmID
+        .i0(RdID),                      // Destination register (Rd)
+        .sel(Reg2Loc),                  // Register selection control
+        .out(Ab)                        // Selected register address
     );
 
     // Handle Branch and Link write address - select between Rd or x30 (link register)
