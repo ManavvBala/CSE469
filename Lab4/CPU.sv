@@ -77,9 +77,9 @@ module CPU (
     logic [63:0] PCID, PCEX, PCMem;   // PC values through pipeline
     logic [63:0] regAddrMem;          // PC+4 for branch and link in MEM stage
     
-    // Forwarding signals (simplified - removed ForwardStore)
-    logic [1:0] ForwardA, ForwardB;
-    logic [63:0] ForwardAMuxOut, ForwardBMuxOut;
+    // Forwarding signals (updated to match working implementation)
+    logic [1:0] ForwardA, ForwardB, ForwardStore;
+    logic [63:0] ForwardAMuxOut, ForwardBMuxOut, ForwardStoreMuxOut;
     logic [63:0] ALUBInput;
     logic [63:0] regAddrWB;
     
@@ -181,7 +181,7 @@ module CPU (
     // Data signals propagated from EX to MEM stage
     DFF_N #(5) RdEX_MEM (.q(RdMem), .d(RdEX), .reset(rst), .clk(clk));   // Destination reg
     DFF_N #(64) ALUResultEX_MEM (.q(ALUResultMem), .d(ALUResultEX), .reset(rst), .clk(clk)); // ALU result
-    DFF_N #(64) Rd2EX_MEM (.q(Rd2Mem), .d(ForwardBMuxOut), .reset(rst), .clk(clk)); // Store data from second register
+    DFF_N #(64) Rd2EX_MEM (.q(Rd2Mem), .d(ForwardStoreMuxOut), .reset(rst), .clk(clk)); // Store data (forwarded)
     DFF_N #(64) PCR1 (.q(PCMem), .d(PCEX), .reset(rst), .clk(clk));     // PC value
     DFF_N #(26) brAddr26R1 (.q(brAddr26Mem), .d(brAddr26EX), .reset(rst), .clk(clk)); // 26-bit branch addr
     DFF_N #(19) condAddr19R1 (.q(condAddr19Mem), .d(condAddr19EX), .reset(rst), .clk(clk)); // 19-bit cond addr
@@ -208,7 +208,7 @@ module CPU (
     DFF_N #(64) regAddrR (.q(regAddrWB), .d(regAddrMem), .reset(rst), .clk(clk)); // PC+4 for branch link
 
     //==============================================================================
-    // FORWARDING UNIT (SIMPLIFIED)
+    // FORWARDING UNIT (UPDATED TO MATCH WORKING IMPLEMENTATION)
     //==============================================================================
     
     ForwardingUnit forwardingUnit (
@@ -219,14 +219,15 @@ module CPU (
         .MEMWB_Rd(RdWB), 
         .MEMWB_RegWrite(RegWriteWB), 
         .ForwardA(ForwardA), 
-        .ForwardB(ForwardB)
+        .ForwardB(ForwardB),
+        .ForwardStore(ForwardStore)
     );
     
     //==============================================================================
-    // FORWARDING MUXES (SIMPLIFIED)
+    // FORWARDING MUXES (UPDATED TO MATCH WORKING IMPLEMENTATION)
     //==============================================================================
     
-    // Forward A (for first ALU operand and store data)
+    // Forward A (for first ALU operand)
     mux4xN_N #(64) ForwardAMux (
         .i00(Rd1EX), 
         .i01(WriteDataWB), 
@@ -244,6 +245,16 @@ module CPU (
         .i11(64'b0), 
         .sel(ForwardB), 
         .out(ForwardBMuxOut)
+    );
+    
+    // Forward Store (for store data - separate from ALU forwarding)
+    mux4xN_N #(64) ForwardStoreMux (
+        .i00(Rd2EX), 
+        .i01(WriteDataWB), 
+        .i10(ALUResultMem), 
+        .i11(64'b0), 
+        .sel(ForwardStore), 
+        .out(ForwardStoreMuxOut)
     );
 
     //==============================================================================
@@ -373,14 +384,13 @@ module CPU (
     // REGISTER FILE LOGIC
     //==============================================================================
     
-    // Select between Rd and Rm as second register to read
-    // Special case: STUR needs to read store data from RdID regardless of Reg2Loc
+    // Select between Rd and Rm as second register to read (reverted to original)
     logic [4:0] Ab;
     mux2xN_N #(5) reglocmux (
-        .i1(MemWriteID ? RdID : RmID),  // STUR uses RdID (store data), others use RmID
-        .i0(RdID),                      // Destination register (Rd)
-        .sel(Reg2Loc),                  // Register selection control
-        .out(Ab)                        // Selected register address
+        .i1(RmID),        // Second source register (Rm)
+        .i0(RdID),        // Destination register (Rd)
+        .sel(Reg2Loc),    // Register selection control
+        .out(Ab)          // Selected register address
     );
 
     // Handle Branch and Link write address - select between Rd or x30 (link register)
