@@ -8,6 +8,9 @@ module ForwardingUnit (
     input logic MEMWB_RegWrite,
     output logic [1:0] ForwardA, ForwardB
 );
+
+	        logic rm_hazard_ex, rm_hazard_mem, rd_hazard_ex, rd_hazard_mem;
+
     always_comb begin
         // default
         ForwardA = 2'b00;
@@ -25,7 +28,6 @@ module ForwardingUnit (
 
         // B Hazards (for both Rm and Rd - second source register and store data)
         // Check both Rm (for ALU operations) and Rd (for store operations)
-        logic rm_hazard_ex, rm_hazard_mem, rd_hazard_ex, rd_hazard_mem;
         
         // Rm hazards
         rm_hazard_ex = (EXMEM_RegWrite) & (EXMEM_Rd != 5'd31) & (EXMEM_Rd == IDEX_Rm);

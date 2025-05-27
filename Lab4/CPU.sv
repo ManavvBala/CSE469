@@ -175,7 +175,6 @@ module CPU (
     // Data signals propagated from EX to MEM stage
     DFF_N #(5) RdEX_MEM (.q(RdMem), .d(RdEX), .reset(rst), .clk(clk));   // Destination reg
     DFF_N #(64) ALUResultEX_MEM (.q(ALUResultMem), .d(ALUResultEX), .reset(rst), .clk(clk)); // ALU result
-    DFF_N #(64) Rd2EX_MEM (.q(Rd2Mem), .d(ForwardBMuxOut), .reset(rst), .clk(clk)); // Store data
     DFF_N #(64) PCR1 (.q(PCMem), .d(PCEX), .reset(rst), .clk(clk));     // PC value
     DFF_N #(26) brAddr26R1 (.q(brAddr26Mem), .d(brAddr26EX), .reset(rst), .clk(clk)); // 26-bit branch addr
     DFF_N #(19) condAddr19R1 (.q(condAddr19Mem), .d(condAddr19EX), .reset(rst), .clk(clk)); // 19-bit cond addr
@@ -200,6 +199,9 @@ module CPU (
     logic [63:0] ForwardAMuxOut, ForwardBMuxOut;
     logic [63:0] ALUBInput;
     logic [63:0] regAddrWB;
+	 
+	     DFF_N #(64) Rd2EX_MEM (.q(Rd2Mem), .d(ForwardBMuxOut), .reset(rst), .clk(clk)); // Store data
+
     
     // Data signals propagated from MEM to WB stage
     DFF_N #(5) RdMEM_WB (.q(RdWB), .d(RdMem), .reset(rst), .clk(clk));   // Destination reg
