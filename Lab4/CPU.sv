@@ -223,15 +223,17 @@ module CPU (
     
     // FORWARDING MUXES
     mux4xN_N #(64) ForwardAMux (
-        .i00(Rd1EX), 
-        .i01(WriteDataWB), 
-        .i10(ALUResultMem), 
-        .i11(64'b0), 
-        .sel(ForwardA), 
-        .out(ForwardAMuxOut)
+    .i00(Rd1EX), 
+    .i01(WriteDataWB), 
+    .i10(ALUResultMem), 
+    .i11(64'b0), 
+    .sel(ForwardA), 
+    .out(ForwardAMuxOut)
     );
+
+    // FIXED: Use Rd2EX instead of ALUBInput for proper store forwarding
     mux4xN_N #(64) ForwardBMux (
-        .i00(ALUBInput), 
+        .i00(Rd2EX),        // Changed from ALUBInput to Rd2EX
         .i01(WriteDataWB), 
         .i10(ALUResultMem), 
         .i11(64'b0), 
@@ -239,6 +241,13 @@ module CPU (
         .out(ForwardBMuxOut)
     );
 
+// Then use ForwardBMuxOut in the ALU source mux instead of Rd2EX
+mux2xN_N #(64) alusrcmux (
+    .i1(AluImmMuxOut),     // Immediate value
+    .i0(ForwardBMuxOut),   // Changed from Rd2EX to ForwardBMuxOut
+    .sel(ALUSrcEX),        // ALU source control
+    .out(ALUBInput)        // Selected ALU B input
+);
     //==============================================================================
     // BRANCH DECISION LOGIC IN MEM STAGE
     //==============================================================================
@@ -427,18 +436,11 @@ module CPU (
         .out(AluImmMuxOut)                 // Extended immediate
     );
 
-    // Choose between register or immediate for ALU B input
-    mux2xN_N #(64) alusrcmux (
-        .i1(AluImmMuxOut),  // Immediate value
-        .i0(Rd2EX),         // Register value
-        .sel(ALUSrcEX),     // ALU source control
-        .out(ALUBInput)     // Selected ALU B input
-    );
 
     // Main ALU - performs arithmetic and logic operations
     alu mainAlu (
         .A(ForwardAMuxOut),              // First operand (with forwarding)
-        .B(ForwardBMuxOut),              // Second operand (with forwarding)
+        .B(ALUBInput),              // Second operand (with forwarding)
         .cntrl({1'b0, ALUOpEX1, ALUOpEX0}), // ALU operation code
         .result(ALUResultEX),            // ALU result
         .negative(alu_negative),         // Negative flag
