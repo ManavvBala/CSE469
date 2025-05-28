@@ -59,6 +59,9 @@ module CPU (
     // Flag propagation through pipeline
     logic SetFlagMem;
     logic alu_zero_mem, alu_negative_mem, alu_overflow_mem, alu_carry_mem;
+
+    // make sure these are basically unused
+    logic alu_zero_wb, alu_negative_wb, alu_overflow_wb, alu_carry_wb;
     
     // Register addresses through the pipeline
     logic [4:0] RnID, RmID, RdID;  // Register addresses in ID stage
@@ -209,6 +212,11 @@ module CPU (
     DFF_N #(64) DataMemOutMEM_WB (.q(DataMemOutWB), .d(DataMemOutMem), .reset(rst), .clk(clk)); // Memory data
     DFF_N #(64) regAddrR (.q(regAddrWB), .d(regAddrMem), .reset(rst), .clk(clk)); // PC+4 for branch link
 
+    // ALU Flags propogated from MEM to WB stage
+    DFF_N #(1) alu_zero_R2 (.q(alu_zero_wb), .d(alu_zero_mem), .reset(rst), .clk(clk));
+    DFF_N #(1) alu_negative_R2 (.q(alu_negative_wb), .d(alu_negative_mem), .reset(rst), .clk(clk));
+    DFF_N #(1) alu_overflow_R2 (.q(alu_overflow_wb), .d(alu_overflow_mem), .reset(rst), .clk(clk));
+    DFF_N #(1) alu_carry_R2 (.q(alu_carry_wb), .d(alu_carry_mem), .reset(rst), .clk(clk));
 
     
     // FORWARDING UNIT
@@ -289,22 +297,37 @@ mux2xN_N #(64) alusrcmux (
         .enable(SetFlagMem)            // Flag update enable
     );
 
+    // ALL B.COND LOGIC SHOULD USE FLAGS FROM WB stage
+    // CBZ logic should use flags from EX/MEM register, since same instruction
     // XOR of negative and overflow flags for less-than comparison
-    xor #(50ps) xorCheck (negativeSelect, negative, overflow);
+    
+    // this xor is for LT, so should use WB values
+    // inputs to the lessthancheck need to be EITHER from flag register or straight from ALU
+    logic muxedNegative, muxedOverflow;
+    mux2_1 (.d({alu_negative, negative}), .q(muxedNegative), .sel(SetFlagEX));
+    mux2_1 (.d({alu_overflow, overflow}), .q(muxedOverflow), .sel(SetFlagEX));
+
+    xor #(50ps) LessThanCheck (negativeSelect, muxedNegative, muxedOverflow);
+    // need a zero check
+    logic direct_zero_check;
+    // should take the contents of whatever CBZ would be reading (Rd2?)
+    isZero (.in(Rd2ID), .out(direct_zero_check));
     
     // Select branch condition: zero or (negative XOR overflow)
     mux2xN_N #(1) condBranchMux (
-        .i0(zero),               // Zero flag
+        .i0(direct_zero_check),               // Zero flag
         .i1(negativeSelect),     // Less than condition
         .sel(CheckForLTMem),     // Select less than check
         .out(temp)               // Condition result
     );
 
     // AND condition with branch taken control
-    and #(50ps) BranchAND (condBranchResult, temp, BRTakenMem);
+    // should just use BRTaken direct from CPU since generated in ID stage
+    and #(50ps) BranchAND (condBranchResult, temp, BRTaken);
     
     // OR unconditional branch with conditional result
-    or #(50ps) BranchOR (brSelect, UncondBranchMem, condBranchResult);
+    // use UncondBranch, not UncondBranchMem, since generated in ID stage
+    or #(50ps) BranchOR (brSelect, UncondBranch, condBranchResult);
 
     //==============================================================================
     // PROGRAM COUNTER LOGIC
@@ -328,10 +351,12 @@ mux2xN_N #(64) alusrcmux (
 
     // Select between unconditional branch address (brAddr26) and conditional address (condAddr19)
     // with sign extension
+    // NOW THIS MUX TAKES IN THE ID stage branch address to add
     mux2xN_N #(64) ucondMux (
-        .sel(UncondBranchMem),
-        .i1({{38{brAddr26Mem[25]}}, brAddr26Mem}),     // Sign-extend 26-bit addr
-        .i0({{45{condAddr19Mem[18]}}, condAddr19Mem}), // Sign-extend 19-bit addr
+        // UncondBranchMem needs to be updated too, should just be the control signal generated in ID
+        .sel(UncondBranch),
+        .i1({{38{brAddr26ID[25]}}, brAddr26ID}),     // Sign-extend 26-bit addr
+        .i0({{45{condAddr19ID[18]}}, condAddr19ID}), // Sign-extend 19-bit addr
         .out(nextAddrPreShift)                         // Selected address
     );
 
@@ -345,7 +370,8 @@ mux2xN_N #(64) alusrcmux (
 
     // Calculate branch target address: PC + (sign-extended offset << 2)
     adder_64bit brAdder (
-        .A(PCMem),
+        // should take PCID to move it into ID
+        .A(PCID),
         .B(nextAddrPostShift),
         .out(brAddr)
     );
@@ -361,8 +387,9 @@ mux2xN_N #(64) alusrcmux (
     // Select between calculated branch address and register branch (BranchRegister)
     mux2xN_N #(64) FinalPCMUX (
         .i0(finalPCMuxIntermediate),  // Calculated branch address
-        .i1(Rd2Mem),                  // Address from register (forwarded to MEM stage)
-        .sel(BranchRegisterMem),      // Branch to register?
+        // change this to be the value found in the ID stage for BR
+        .i1(Rd2ID),                  // Address from register (forwarded to MEM stage)
+        .sel(BranchRegister),      // Branch to register?
         .out(curPC)                   // Final PC value
     );
 
@@ -462,7 +489,7 @@ mux2xN_N #(64) alusrcmux (
         .overflow(alu_overflow),         // Overflow flag
         .carry_out(alu_carry)            // Carry flag
     );
-
+    
     //==============================================================================
     // MEMORY STAGE
     //==============================================================================
