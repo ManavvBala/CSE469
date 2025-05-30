@@ -10,7 +10,7 @@ cModel Technology
 dC:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3
 vadder_1bit
 Z0 DXx6 sv_std 3 std 0 22 AD7iAPLo6nTIKk<N0eo=D3
-Z1 !s110 1748326882
+Z1 !s110 1748591678
 !i10b 1
 !s100 QH7MEkZ2zaLCeH47KVcUn2
 IdX579_SCD7^Rh79zLYcDj1
@@ -26,7 +26,7 @@ Z5 OV;L;10.5b;63
 r1
 !s85 0
 31
-Z6 !s108 1748326882.000000
+Z6 !s108 1748591678.000000
 !s107 ./adder_1bit.sv|
 !s90 -reportprogress|300|./adder_1bit.sv|
 !i113 1
@@ -127,13 +127,13 @@ vControlUnit
 R0
 R1
 !i10b 1
-!s100 E20dK?fJS<U>EhmR_Yi0A0
-INFUz[FV6RKa3JBmORN;:;2
+!s100 PD:<E9DJgVM;OJPkm_;J`0
+I]nZf?d^e]NcEb=Jhf:O[`3
 R2
 !s105 ControlUnit_sv_unit
 S1
 R3
-w1748324212
+w1748463820
 8./ControlUnit.sv
 F./ControlUnit.sv
 L0 1
@@ -151,13 +151,13 @@ vCPU
 R0
 R1
 !i10b 1
-!s100 R=L24>IQM]4CFOQ8JJ33`0
-IJABP`O[o_6d@H>Nl1HbhG1
+!s100 a6bPTiFA<ZOzJzi3oDk9o3
+I9X2MIfcMz]a1j_<Im`hPQ0
 R2
 !s105 CPU_sv_unit
 S1
 R3
-w1748326878
+w1748590613
 8./CPU.sv
 F./CPU.sv
 L0 2
@@ -173,7 +173,7 @@ R7
 n@c@p@u
 vcpustim
 R0
-Z8 !s110 1748326883
+Z8 !s110 1748591679
 !i10b 1
 !s100 bOoJG=aUD0fi09mfizVXz0
 IXfLYRA@noR_ZV`MiMW_G93
@@ -189,14 +189,14 @@ R5
 r1
 !s85 0
 31
-Z9 !s108 1748326883.000000
+Z9 !s108 1748591679.000000
 !s107 ./cpustim.sv|
 !s90 -reportprogress|300|./cpustim.sv|
 !i113 1
 R7
 vD_FF
 R0
-R8
+R1
 !i10b 1
 !s100 mAi1d^UBh_1VM52d9_c4K1
 Ib4[WQTz36M4Daf]SMe1dm2
@@ -212,7 +212,7 @@ R5
 r1
 !s85 0
 31
-R9
+R6
 !s107 ./DFF.sv|
 !s90 -reportprogress|300|./DFF.sv|
 !i113 1
@@ -220,7 +220,7 @@ R7
 n@d_@f@f
 vdatamem
 R0
-R8
+R1
 !i10b 1
 !s100 GMBNeiNgJV6dVUhTA==id0
 IcTh1k_iAbUd=^8TiY5E4b0
@@ -243,7 +243,7 @@ Z14 !s90 -reportprogress|300|./DataMem.sv|
 R7
 vdatamem_testbench
 R0
-R8
+R1
 !i10b 1
 !s100 5a><cTTjz0FZk:5BaZQcE0
 IDl;zCN=6k[HL<78_MjZF;3
@@ -266,7 +266,7 @@ R14
 R7
 vdemux1_2
 R0
-R8
+R1
 !i10b 1
 !s100 S6<JKXcV;@]>C<82gjb?a2
 IiBW^zlhKM`G7g;l6b9eEF1
@@ -282,14 +282,14 @@ R5
 r1
 !s85 0
 31
-R9
+R6
 !s107 ./demux1_2.sv|
 !s90 -reportprogress|300|./demux1_2.sv|
 !i113 1
 R7
 vdemux2_4
 R0
-R8
+R1
 !i10b 1
 !s100 LM5QLgQ=U`Bc^^0X0RGQ@2
 ITd`;Y3=GkZ8`_zaa`mFl22
@@ -305,14 +305,14 @@ R5
 r1
 !s85 0
 31
-R9
+R6
 !s107 ./demux2_4.sv|
 !s90 -reportprogress|300|./demux2_4.sv|
 !i113 1
 R7
 vdemux3_8
 R0
-R8
+R1
 !i10b 1
 !s100 19z;;ooQ8b>PPDlGiZBaP2
 Iz>M=4VWhdCf^8=az>^46H0
@@ -328,14 +328,14 @@ R5
 r1
 !s85 0
 31
-R9
+R6
 !s107 ./demux3_8.sv|
 !s90 -reportprogress|300|./demux3_8.sv|
 !i113 1
 R7
 vdemux5_32
 R0
-R8
+R1
 !i10b 1
 !s100 :A?_X^]KhO8`VjAf<KIUR2
 IP>PYVJAbU]O;j>j1H:hGh3
@@ -351,14 +351,14 @@ R5
 r1
 !s85 0
 31
-R9
+R6
 !s107 ./demux5_32.sv|
 !s90 -reportprogress|300|./demux5_32.sv|
 !i113 1
 R7
 vDFF_enable
 R0
-R8
+R1
 !i10b 1
 !s100 ;cRXnl>TGKi7@SbMo16g?3
 Ifh8ae?G4ejH63:0dWA[_@0
@@ -374,7 +374,7 @@ R5
 r1
 !s85 0
 31
-R9
+R6
 !s107 ./DFF_enable.sv|
 !s90 -reportprogress|300|./DFF_enable.sv|
 !i113 1
@@ -398,7 +398,7 @@ R5
 r1
 !s85 0
 31
-R9
+R6
 !s107 ./DFF_N.sv|
 !s90 -reportprogress|300|./DFF_N.sv|
 !i113 1
@@ -431,13 +431,13 @@ vForwardingUnit
 R0
 R1
 !i10b 1
-!s100 nIbI`oSTb[U:5DDW7BHL92
-IEX85h^<1Cg:O9J4I`7F3o3
+!s100 I`Mcd=0=F>L2QlWF1cY6m1
+IjH:XOmaFTU?:NW^>:i0N32
 R2
 !s105 ForwardingUnit_sv_unit
 S1
 R3
-w1748326857
+w1748590124
 8./ForwardingUnit.sv
 F./ForwardingUnit.sv
 L0 3
@@ -461,7 +461,7 @@ R2
 Z15 !s105 Instructmem_sv_unit
 S1
 R3
-Z16 w1748323897
+Z16 w1748501338
 Z17 8./Instructmem.sv
 Z18 F./Instructmem.sv
 L0 18

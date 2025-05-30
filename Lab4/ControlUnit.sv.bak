@@ -204,7 +204,7 @@ module ControlUnit (
             default: begin
                 Reg2Loc = 1'bX;
                 UncondBranch = 1'b0;
-                BRTaken = 1'b0;
+                BRTaken = 1'bX;
                 MemRead = 1'b0;
                 MemToReg = 1'bX;
                 ALUOp0 = 1'bX;
