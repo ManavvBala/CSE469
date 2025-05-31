@@ -1,5 +1,5 @@
 Analysis & Synthesis report for DE1_SoC
-Fri May 23 17:55:52 2025
+Fri May 30 12:05:17 2025
 Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 
 
@@ -38,7 +38,7 @@ agreement for further details.
 +---------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                              ;
 +-----------------------------+---------------------------------------------+
-; Analysis & Synthesis Status ; Failed - Fri May 23 17:55:52 2025           ;
+; Analysis & Synthesis Status ; Failed - Fri May 30 12:05:17 2025           ;
 ; Quartus Prime Version       ; 17.0.0 Build 595 04/25/2017 SJ Lite Edition ;
 ; Revision Name               ; DE1_SoC                                     ;
 ; Top-level Entity Name       ; CPU                                         ;
@@ -162,7 +162,7 @@ agreement for further details.
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
-    Info: Processing started: Fri May 23 17:55:47 2025
+    Info: Processing started: Fri May 30 12:05:12 2025
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off DE1_SoC -c DE1_SoC
 Info (20030): Parallel compilation is enabled and will use 16 of the 16 processors detected
 Info (12021): Found 1 design units, including 1 entities, in source file adder_1bit.sv
@@ -234,32 +234,42 @@ Info (12021): Found 1 design units, including 1 entities, in source file regstim
     Info (12023): Found entity 1: regstim File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/regstim.sv Line: 4
 Info (12021): Found 1 design units, including 1 entities, in source file cpu.sv
     Info (12023): Found entity 1: CPU File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 2
+Info (12021): Found 1 design units, including 1 entities, in source file dff_n.sv
+    Info (12023): Found entity 1: DFF_N File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/DFF_N.sv Line: 1
 Info (12127): Elaborating entity "CPU" for the top level hierarchy
-Info (12128): Elaborating entity "ControlUnit" for hierarchy "ControlUnit:control" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 121
-Info (12128): Elaborating entity "D_FF" for hierarchy "D_FF:ALUOpR0" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 128
-Info (12128): Elaborating entity "ForwardingUnit" for hierarchy "ForwardingUnit:forwardingUnit" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 220
-Info (12128): Elaborating entity "mux4xN_N" for hierarchy "mux4xN_N:ForwardAMux" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 230
+Info (12128): Elaborating entity "ControlUnit" for hierarchy "ControlUnit:control" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 127
+Info (12128): Elaborating entity "D_FF" for hierarchy "D_FF:ALUOpR0" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 134
+Info (12128): Elaborating entity "DFF_N" for hierarchy "DFF_N:RnR" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 152
+Info (12128): Elaborating entity "DFF_N" for hierarchy "DFF_N:imm12R" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 155
+Info (12128): Elaborating entity "DFF_N" for hierarchy "DFF_N:dAddr9R" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 156
+Info (12128): Elaborating entity "mux2xN_N" for hierarchy "mux2xN_N:tryforwardMuxA" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 162
+Info (12128): Elaborating entity "mux2_1" for hierarchy "mux2xN_N:tryforwardMuxA|mux2_1:bitMux[0].m" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/mux2xN_N.sv Line: 10
+Info (12128): Elaborating entity "DFF_N" for hierarchy "DFF_N:Rd1R" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 165
+Info (12128): Elaborating entity "DFF_N" for hierarchy "DFF_N:brAddr26R0" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 169
+Info (12128): Elaborating entity "DFF_N" for hierarchy "DFF_N:condAddr19R0" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 170
+Info (12128): Elaborating entity "DFF_N" for hierarchy "DFF_N:alu_zero_R2" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 228
+Info (12128): Elaborating entity "ForwardingUnit" for hierarchy "ForwardingUnit:forwardingUnit" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 262
+Info (12128): Elaborating entity "mux4xN_N" for hierarchy "mux4xN_N:ForwardAMux" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 272
 Info (12128): Elaborating entity "mux4_1" for hierarchy "mux4xN_N:ForwardAMux|mux4_1:bitMux[0].m" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/mux4xN_N.sv Line: 10
-Info (12128): Elaborating entity "mux2_1" for hierarchy "mux4xN_N:ForwardAMux|mux4_1:bitMux[0].m|mux2_1:first_stage1" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/mux4_1.sv Line: 8
-Info (12128): Elaborating entity "flag_register" for hierarchy "flag_register:regflag" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 263
+Info (12128): Elaborating entity "flag_register" for hierarchy "flag_register:regflag" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 316
 Info (12128): Elaborating entity "DFF_enable" for hierarchy "flag_register:regflag|DFF_enable:zeroDFF" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/flag_register.sv Line: 9
-Info (12128): Elaborating entity "mux2xN_N" for hierarchy "mux2xN_N:condBranchMux" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 274
-Info (12128): Elaborating entity "adder_64bit" for hierarchy "adder_64bit:regAdder" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 296
+Info (12128): Elaborating entity "isZero" for hierarchy "isZero:directZeroChecker" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 332
+Info (12128): Elaborating entity "mux2xN_N" for hierarchy "mux2xN_N:condBranchMux" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 340
+Info (12128): Elaborating entity "adder_64bit" for hierarchy "adder_64bit:regAdder" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 368
 Info (12128): Elaborating entity "adder_1bit" for hierarchy "adder_64bit:regAdder|adder_1bit:a1" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/adder_64bit.sv Line: 15
-Info (12128): Elaborating entity "mux2xN_N" for hierarchy "mux2xN_N:ucondMux" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 305
-Info (12128): Elaborating entity "shifter" for hierarchy "shifter:brShifter" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 313
-Info (12128): Elaborating entity "PC" for hierarchy "PC:pc" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 344
-Info (12128): Elaborating entity "instructmem" for hierarchy "instructmem:imem" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 351
+Info (12128): Elaborating entity "shifter" for hierarchy "shifter:brShifter" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 387
+Info (12128): Elaborating entity "PC" for hierarchy "PC:pc" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 422
+Info (12128): Elaborating entity "instructmem" for hierarchy "instructmem:imem" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 429
 Warning (10175): Verilog HDL warning at Instructmem.sv(25): ignoring unsupported system task File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/Instructmem.sv Line: 25
-Error (10170): Verilog HDL syntax error at test11_Sort.arm(65) near text: _. Check for and fix any syntax errors that appear immediately before or at the specified keyword. The Intel FPGA Knowledge Database contains many articles with specific details on how to resolve this error. Visit the Knowledge Database at https://www.altera.com/support/support-resources/knowledge-base/search.html and search for this specific error message number. File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/Benchmarks/test11_Sort.arm Line: 65
+Error (10170): Verilog HDL syntax error at test10_forwarding.arm(73) near text: _. Check for and fix any syntax errors that appear immediately before or at the specified keyword. The Intel FPGA Knowledge Database contains many articles with specific details on how to resolve this error. Visit the Knowledge Database at https://www.altera.com/support/support-resources/knowledge-base/search.html and search for this specific error message number. File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/Benchmarks/test10_forwarding.arm Line: 73
 Info (10648): Verilog HDL Display System Task info at Instructmem.sv(44): Running benchmark:  File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/Instructmem.sv Line: 44
 Info (10648): Verilog HDL Display System Task info at Instructmem.sv(45): First few instructions: File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/Instructmem.sv Line: 45
-Error (12152): Can't elaborate user hierarchy "instructmem:imem" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 351
+Error (12152): Can't elaborate user hierarchy "instructmem:imem" File: C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/CPU.sv Line: 429
 Info (144001): Generated suppressed messages file C:/Users/Hitesh M/Documents/GitHub/CSE469/Lab4/output_files/DE1_SoC.map.smsg
 Error: Quartus Prime Analysis & Synthesis was unsuccessful. 2 errors, 1 warning
-    Error: Peak virtual memory: 4785 megabytes
-    Error: Processing ended: Fri May 23 17:55:52 2025
-    Error: Elapsed time: 00:00:05
+    Error: Peak virtual memory: 4789 megabytes
+    Error: Processing ended: Fri May 30 12:05:18 2025
+    Error: Elapsed time: 00:00:06
     Error: Total CPU time (on all processors): 00:00:12
 
 

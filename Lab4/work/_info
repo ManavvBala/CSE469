@@ -10,7 +10,7 @@ cModel Technology
 dC:/Users/Hitesh M/Documents/GitHub/CSE469/Lab3
 vadder_1bit
 Z0 DXx6 sv_std 3 std 0 22 AD7iAPLo6nTIKk<N0eo=D3
-Z1 !s110 1748591678
+Z1 !s110 1748656484
 !i10b 1
 !s100 QH7MEkZ2zaLCeH47KVcUn2
 IdX579_SCD7^Rh79zLYcDj1
@@ -26,7 +26,7 @@ Z5 OV;L;10.5b;63
 r1
 !s85 0
 31
-Z6 !s108 1748591678.000000
+Z6 !s108 1748656484.000000
 !s107 ./adder_1bit.sv|
 !s90 -reportprogress|300|./adder_1bit.sv|
 !i113 1
@@ -151,13 +151,13 @@ vCPU
 R0
 R1
 !i10b 1
-!s100 a6bPTiFA<ZOzJzi3oDk9o3
-I9X2MIfcMz]a1j_<Im`hPQ0
+!s100 gVS7;UgJe_Boj3aZj:Sjg3
+IE;nW_[7PoL^ROTV<KO0:`1
 R2
 !s105 CPU_sv_unit
 S1
 R3
-w1748590613
+w1748653168
 8./CPU.sv
 F./CPU.sv
 L0 2
@@ -173,15 +173,15 @@ R7
 n@c@p@u
 vcpustim
 R0
-Z8 !s110 1748591679
+Z8 !s110 1748656485
 !i10b 1
-!s100 bOoJG=aUD0fi09mfizVXz0
-IXfLYRA@noR_ZV`MiMW_G93
+!s100 TdCk6RzzWQdo`6Gh:QAA]3
+IBCQILUGemR=8V1k32C7S^1
 R2
 !s105 cpustim_sv_unit
 S1
 R3
-R4
+w1748654385
 8./cpustim.sv
 F./cpustim.sv
 L0 2
@@ -189,7 +189,7 @@ R5
 r1
 !s85 0
 31
-Z9 !s108 1748591679.000000
+Z9 !s108 1748656485.000000
 !s107 ./cpustim.sv|
 !s90 -reportprogress|300|./cpustim.sv|
 !i113 1
@@ -382,7 +382,7 @@ R7
 n@d@f@f_enable
 vDFF_N
 R0
-R8
+R1
 !i10b 1
 !s100 1:UhTjeFgOHH@6^Xc=l1g2
 IS49T>[0D9l^Ki[[Q;aNKA3
@@ -431,16 +431,16 @@ vForwardingUnit
 R0
 R1
 !i10b 1
-!s100 I`Mcd=0=F>L2QlWF1cY6m1
-IjH:XOmaFTU?:NW^>:i0N32
+!s100 TDVz;mQ;6_IWD_B41POmk2
+I6oXoNM2EOU?D`X_=7IJH13
 R2
 !s105 ForwardingUnit_sv_unit
 S1
 R3
-w1748590124
+w1748639277
 8./ForwardingUnit.sv
 F./ForwardingUnit.sv
-L0 3
+L0 1
 R5
 r1
 !s85 0
@@ -453,15 +453,15 @@ R7
 n@forwarding@unit
 vinstructmem
 R0
-R8
+R1
 !i10b 1
-!s100 CcAGUo`H4SV0UA3;c;`zS1
-I8`99Gm_kFi]8CM4gbe`h>3
+!s100 FJjSc<Bk`@bo0n=GCV]^82
+I`F5h8HWG50mZco51nYD<>3
 R2
 Z15 !s105 Instructmem_sv_unit
 S1
 R3
-Z16 w1748501338
+Z16 w1748655953
 Z17 8./Instructmem.sv
 Z18 F./Instructmem.sv
 L0 18
@@ -469,14 +469,14 @@ R5
 r1
 !s85 0
 31
-R9
+R6
 Z19 !s107 ./Instructmem.sv|
 Z20 !s90 -reportprogress|300|./Instructmem.sv|
 !i113 1
 R7
 vinstructmem_testbench
 R0
-R8
+R1
 !i10b 1
 !s100 j<3NZYN:LkKiEWZ=hT7661
 IJ8n0Y2ofHGRoUMg`GcORf0
@@ -492,14 +492,14 @@ R5
 r1
 !s85 0
 31
-R9
+R6
 R19
 R20
 !i113 1
 R7
 visZero
 R0
-R8
+R1
 !i10b 1
 !s100 NS@jh[0jfm_21l?L_dSan0
 IVEV48BI>Yg=N40lIW5Pjk0
@@ -515,7 +515,7 @@ R5
 r1
 !s85 0
 31
-R9
+R6
 !s107 ./isZero.sv|
 !s90 -reportprogress|300|./isZero.sv|
 !i113 1
@@ -539,7 +539,7 @@ R5
 r1
 !s85 0
 31
-R9
+R6
 Z24 !s107 ./math.sv|
 Z25 !s90 -reportprogress|300|./math.sv|
 !i113 1
@@ -562,7 +562,7 @@ R5
 r1
 !s85 0
 31
-R9
+R6
 R24
 R25
 !i113 1
@@ -841,7 +841,7 @@ R5
 r1
 !s85 0
 31
-R9
+R6
 R24
 R25
 !i113 1
@@ -864,7 +864,7 @@ R5
 r1
 !s85 0
 31
-R9
+R6
 R24
 R25
 !i113 1

@@ -43,6 +43,7 @@ module CPU (
     logic BranchRegister; // 1: Branch to register
     logic CheckForLT;     // 1: Check for less than condition
     logic SetFlagID;      // 1: Update CPU flags
+	 logic Reg2LocEX;
     
     // Control signals in EX stage
     logic MemReadEX, MemToRegEX, ALUOpEX0, ALUOpEX1;
@@ -75,10 +76,16 @@ module CPU (
     logic [25:0] brAddr26ID, brAddr26EX, brAddr26Mem;  // 26-bit branch address
     logic [18:0] condAddr19ID, condAddr19EX, condAddr19Mem; // 19-bit conditional branch address
     logic [10:0] opcode;               // Instruction opcode
+	 
+	 logic [63:0] regAddrEX;
     
     // PC and address calculation signals
     logic [63:0] PCID, PCEX, PCMem;   // PC values through pipeline
     logic [63:0] regAddrMem;          // PC+4 for branch and link in MEM stage
+	 
+	 logic [63:0] regAdderOut; // stores the output of PC + 4
+	 
+	 logic [63:0] PCIDPlus4ForBR;
 	 
 	 // added these
 	 logic ForwardTryA, ForwardTryB;
@@ -139,7 +146,8 @@ module CPU (
     D_FF MemToRegR0 (.q(MemToRegEX), .d(MemToRegID), .reset(rst), .clk(clk)); // Memory to reg
     D_FF RegWriteR0 (.q(RegWriteEX), .d(RegWriteID), .reset(rst), .clk(clk)); // Register write
     D_FF ALUSrcR (.q(ALUSrcEX), .d(ALUSrc), .reset(rst), .clk(clk));          // ALU source
-    D_FF ZExtR (.q(ZExtEX), .d(ZExt), .reset(rst), .clk(clk));                // Zero extension
+    D_FF ZExtR (.q(ZExtEX), .d(ZExt), .reset(rst), .clk(clk));                // Zero extensio
+	 D_FF Reg2LocR (.q(Reg2LocEX), .d(Reg2Loc), .reset(rst), .clk(clk));
     
     // Branch control signals propagated to EX stage
     D_FF UncondBranchR0 (.q(UncondBranchEX), .d(UncondBranch), .reset(rst), .clk(clk));
@@ -168,6 +176,8 @@ module CPU (
     DFF_N #(64) PCR0 (.q(PCEX), .d(PCID), .reset(rst), .clk(clk));   // PC value
     DFF_N #(26) brAddr26R0 (.q(brAddr26EX), .d(brAddr26ID), .reset(rst), .clk(clk)); // 26-bit branch addr
     DFF_N #(19) condAddr19R0 (.q(condAddr19EX), .d(condAddr19ID), .reset(rst), .clk(clk)); // 19-bit cond addr
+	 
+	 DFF_N #(64) PCPlus4R0 (.q(regAddrEX), .d(PCIDPlus4ForBR), .reset(rst), .clk(clk));
 
     //==============================================================================
     // PIPELINE REGISTERS: EX/MEM STAGE
@@ -199,6 +209,8 @@ module CPU (
     D_FF alu_negative_R (.q(alu_negative_mem), .d(alu_negative), .reset(rst), .clk(clk));
     D_FF alu_overflow_R (.q(alu_overflow_mem), .d(alu_overflow), .reset(rst), .clk(clk));
     D_FF alu_carry_R (.q(alu_carry_mem), .d(alu_carry), .reset(rst), .clk(clk));
+	 
+	 DFF_N #(64) PCPlus4R1 (.q(regAddrMem), .d(regAddrEX), .reset(rst), .clk(clk));
 
     //==============================================================================
     // PIPELINE REGISTERS: MEM/WB STAGE
@@ -215,8 +227,6 @@ module CPU (
     logic [63:0] ALUBInput;
     logic [63:0] regAddrWB;
 	 
-	     DFF_N #(64) Rd2EX_MEM (.q(Rd2Mem), .d(ForwardBMuxOut), .reset(rst), .clk(clk)); // Store data
-
     
     // Data signals propagated from MEM to WB stage
     DFF_N #(5) RdMEM_WB (.q(RdWB), .d(RdMem), .reset(rst), .clk(clk));   // Destination reg
@@ -243,6 +253,11 @@ module CPU (
     // );
     // In your CPU module, update the forwarding unit instantiation:
 	 
+	 logic CBZForward;
+	 logic [1:0] ForwardRd;
+	 logic [63:0] ForwardRdMuxOut;
+	       logic [63:0] AluImmMuxOut;
+		  logic [63:0] StoreDataMuxOut;
 
 ForwardingUnit forwardingUnit (
     .IDEX_Rn(RnEX), 
@@ -254,11 +269,14 @@ ForwardingUnit forwardingUnit (
     .MEMWB_RegWrite(RegWriteWB), 
     .ForwardA(ForwardA), 
     .ForwardB(ForwardB),
-	 // added this
+	 .ForwardRd(ForwardRd),
 	 .ForwardTryA,
 	 .ForwardTryB,
 	 .IFID_Rn(RnID),
-	 .IFID_Rm(RmID)
+	 .IFID_Rm(RmID),
+	 .IFID_Rd(RdID),
+	 .IDEX_RegWrite(RegWriteEX),
+	 .CBZForward
 );
     
     // FORWARDING MUXES
@@ -280,8 +298,24 @@ ForwardingUnit forwardingUnit (
         .sel(ForwardB), 
         .out(ForwardBMuxOut)
     );
+	 
+	 mux4xN_N #(64) ForwardRdMux (
+    .i00(Rd2EX),           // Original Rd value
+    .i01(WriteDataWB),     // Forward from WB
+    .i10(ALUResultMem),    // Forward from MEM
+    .i11(64'b0), 
+    .sel(ForwardRd), 
+    .out(ForwardRdMuxOut)
+);
 
-        logic [63:0] AluImmMuxOut;
+  
+
+mux2xN_N #(64) StoreDataMux (
+    .i0(ForwardRdMuxOut),    // Use Rd when Reg2Loc = 0 (stores)
+    .i1(ForwardBMuxOut),     // Use Rm when Reg2Loc = 1 (normal)
+    .sel(Reg2LocEX),         // Select based on Reg2Loc
+    .out(StoreDataMuxOut)
+);
 
 // Then use ForwardBMuxOut in the ALU source mux instead of Rd2EX
 mux2xN_N #(64) alusrcmux (
@@ -289,7 +323,12 @@ mux2xN_N #(64) alusrcmux (
     .i0(ForwardBMuxOut),   // Changed from Rd2EX to ForwardBMuxOut
     .sel(ALUSrcEX),        // ALU source control
     .out(ALUBInput)        // Selected ALU B input
+	 
+
 );
+
+	DFF_N #(64) Rd2EX_MEM (.q(Rd2Mem), .d(StoreDataMuxOut), .reset(rst), .clk(clk));
+
     //==============================================================================
     // BRANCH DECISION LOGIC IN MEM STAGE
     //==============================================================================
@@ -302,10 +341,10 @@ mux2xN_N #(64) alusrcmux (
 
     // Update CPU flags based on ALU results in MEM stage
     flag_register regflag (
-        .in_zero(alu_zero_mem),        // ALU zero flag input
-        .in_negative(alu_negative_mem), // ALU negative flag input
-        .in_overflow(alu_overflow_mem), // ALU overflow flag input
-        .in_carry(alu_carry_mem),       // ALU carry flag input
+        .in_zero(alu_zero),        // ALU zero flag input
+        .in_negative(alu_negative), // ALU negative flag input
+        .in_overflow(alu_overflow), // ALU overflow flag input
+        .in_carry(alu_carry),       // ALU carry flag input
         .out_zero(zero),               // Zero flag output
         .out_negative(negative),       // Negative flag output
         .out_overflow(overflow),       // Overflow flag output
@@ -328,8 +367,11 @@ mux2xN_N #(64) alusrcmux (
     xor #(50ps) LessThanCheck (negativeSelect, muxedNegative, muxedOverflow);
     // need a zero check
     logic direct_zero_check;
+	 logic [63:0] zeroToCheck;
+	 // mux between tryforwardMuxOutB and ALUout
+	 mux2xN_N #(64) zeroMux (.i0(tryforwardMuxOutB), .i1(ALUResultEX), .sel(CBZForward), .out(zeroToCheck));
     // should take the contents of whatever CBZ would be reading (Rd2?)
-    isZero directZeroChecker (.in(Rd2ID), .out(direct_zero_check));  
+    isZero directZeroChecker (.in(zeroToCheck), .out(direct_zero_check));  
     
     // Select branch condition: zero or (negative XOR overflow)
     mux2xN_N #(1) condBranchMux (
@@ -356,7 +398,7 @@ mux2xN_N #(64) alusrcmux (
     logic [63:0] brAddr, finalPCMuxIntermediate;
     logic [63:0] curPC, prevPC;
     
-    logic [63:0] regAdderOut; // stores the output of PC + 4
+    
     // Calculate PC+4 in MEM stage
     // MANAV HIGH THINKING: regAdder shouldn't be PCMem, it should be the current PC value
     adder_64bit regAdder (
@@ -366,6 +408,16 @@ mux2xN_N #(64) alusrcmux (
         // shouldn't output to regAddrMem, should instead send to some intermediate to eventually get back to currPC
         .out(regAdderOut)
     );
+	 
+
+	 
+	 // PCID + 4 adder for BR
+	 adder_64bit BR4Adder (
+		  .A(PCID),
+		  .B(64'd4),
+		  .out(PCIDPlus4ForBR)
+	 );
+	 
 
     // Select between unconditional branch address (brAddr26) and conditional address (condAddr19)
     // with sign extension
@@ -469,9 +521,12 @@ mux2xN_N #(64) alusrcmux (
     mux2xN_N #(64) BLDataMux (
         .i0(WriteData),    // Normal data to write
         .i1(regAddrWB),    // PC+4 for return address
-        .sel(BranchLinkWB), // Branch with link?
+        .sel(BranchLinkWB  ), // Branch with link?
         .out(WriteDataWB)  // Final data to write
     );
+	 
+	 // One more mux in the WB stage triggered by WB to write PC + 4 or normal WriteBack values
+	 //mux2xN_N #(64) BL_WBDataMux
 
     // Register File
     regfile rf (

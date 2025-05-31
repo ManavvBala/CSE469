@@ -26,6 +26,7 @@ add wave -noupdate /cpustim/dut/control/ZExt
 add wave -noupdate /cpustim/dut/control/BranchLink
 add wave -noupdate /cpustim/dut/control/BranchRegister
 add wave -noupdate /cpustim/dut/control/CheckForLT
+add wave -noupdate /cpustim/dut/negativeSelect
 add wave -noupdate -group Memory {/cpustim/dut/dataMemory/mem[80]}
 add wave -noupdate -group Memory {/cpustim/dut/dataMemory/mem[79]}
 add wave -noupdate -group Memory {/cpustim/dut/dataMemory/mem[78]}
@@ -121,18 +122,42 @@ add wave -noupdate -radix unsigned /cpustim/dut/RnID
 add wave -noupdate -radix unsigned /cpustim/dut/RmID
 add wave -noupdate -radix unsigned /cpustim/dut/RdID
 add wave -noupdate -divider ALU
+add wave -noupdate /cpustim/dut/regflag/in_zero
+add wave -noupdate /cpustim/dut/regflag/in_overflow
+add wave -noupdate /cpustim/dut/regflag/in_negative
+add wave -noupdate /cpustim/dut/regflag/in_carry
+add wave -noupdate /cpustim/dut/regflag/out_zero
+add wave -noupdate /cpustim/dut/regflag/out_overflow
+add wave -noupdate /cpustim/dut/regflag/out_negative
+add wave -noupdate /cpustim/dut/regflag/out_carry
+add wave -noupdate /cpustim/dut/SetFlagEX
+add wave -noupdate /cpustim/dut/tryforwardMuxOutA
+add wave -noupdate /cpustim/dut/tryforwardMuxOutB
 add wave -noupdate -radix decimal /cpustim/dut/Rd1ID
 add wave -noupdate -radix decimal /cpustim/dut/Rd1EX
 add wave -noupdate -radix decimal /cpustim/dut/WriteDataWB
 add wave -noupdate /cpustim/dut/ForwardA
+add wave -noupdate /cpustim/dut/ForwardB
 add wave -noupdate -radix decimal /cpustim/dut/mainAlu/A
 add wave -noupdate -radix decimal /cpustim/dut/mainAlu/B
 add wave -noupdate -radix binary /cpustim/dut/mainAlu/cntrl
 add wave -noupdate -radix decimal /cpustim/dut/mainAlu/result
+add wave -noupdate -radix unsigned /cpustim/dut/RdWB
+add wave -noupdate /cpustim/dut/RegWriteWB
+add wave -noupdate -radix unsigned /cpustim/dut/RdEX
+add wave -noupdate /cpustim/dut/RmEX
 add wave -noupdate -radix decimal /cpustim/dut/ALUResultEX
 add wave -noupdate -radix decimal /cpustim/dut/ALUResultMem
 add wave -noupdate -radix decimal /cpustim/dut/ALUResultWB
+add wave -noupdate -divider Stor
+add wave -noupdate /cpustim/dut/ForwardBMuxOut
+add wave -noupdate /cpustim/dut/ForwardRd
+add wave -noupdate /cpustim/dut/ForwardRdMuxOut
+add wave -noupdate /cpustim/dut/StoreDataMuxOut
+add wave -noupdate /cpustim/dut/Rd2Mem
 add wave -noupdate -divider {PC Values}
+add wave -noupdate /cpustim/dut/ForwardTryA
+add wave -noupdate /cpustim/dut/ForwardTryB
 add wave -noupdate /cpustim/dut/direct_zero_check
 add wave -noupdate -radix hexadecimal /cpustim/dut/Rd2ID
 add wave -noupdate /cpustim/dut/BranchRegister
@@ -146,7 +171,7 @@ add wave -noupdate -radix hexadecimal /cpustim/dut/PCID
 add wave -noupdate -radix hexadecimal /cpustim/dut/PCEX
 add wave -noupdate -radix hexadecimal /cpustim/dut/PCMem
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {5750000000 ps} 0}
+WaveRestoreCursors {{Cursor 1} {614017480 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 236
 configure wave -valuecolwidth 254
@@ -162,4 +187,5 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {4973624717 ps} {8359804495 ps}
+WaveRestoreZoom {243882766 ps} {1658550190 ps}
+bookmark add wave bookmark0 {{25142991717 ps} {35272210485 ps}} 112

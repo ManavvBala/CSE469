@@ -2,7 +2,7 @@
 module cpustim();
     // Parameters
     parameter CLOCK_PERIOD = 100000;  // 1 ms clock period (very long)
-    parameter MAX_CYCLES = 1500;        // Adjust based on your program length
+    parameter MAX_CYCLES = 10000;        // Adjust based on your program length
     // Signals
     logic clk;
     logic rst;
@@ -17,7 +17,7 @@ module cpustim();
     // Clock generation
     initial begin
         clk = 0;
-        repeat (3000) begin
+        repeat (10000) begin
             #(CLOCK_PERIOD/2) clk = ~clk;
         end
     end
@@ -31,6 +31,8 @@ module cpustim();
         repeat (3) @(posedge clk);  // Hold reset for 3 clock cycles
         #(CLOCK_PERIOD/10);
         rst = 0;
+		  
+		  
         
         // Run for MAX_CYCLES or until program completion
         for (cycle_count = 0; cycle_count < MAX_CYCLES; cycle_count++) begin
@@ -40,4 +42,5 @@ module cpustim();
         // End simulation
         $finish;
     end
+
 endmodule
