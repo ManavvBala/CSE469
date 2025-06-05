@@ -357,19 +357,15 @@ logic l2_block_size_found = 0;
 		// fill L1
 		// read 128 (one more than L1)
 		$display("TESTING L2 SIZE");
-		for (j = 0; j < 1024; j++) begin
+		for (j = 0; j < 1; j++) begin
 		for (i = 8 * j; i < 8*(j+1);i++) begin
 			addr = i  * 16;
 			readMem(addr, dummy_data, delay);
 			$display("%t Reading address %d took %d cycles", $time, addr, delay);
 		end
+		end
 		readMem('0, dummy_data, delay);
 		$display("%t Reading address %d took %d cycles", $time, 0, delay);
-		if(delay > 50 && j !=0) begin
-				$display("BITCH");
-				$stop();
-		end
-		end
 		$stop();
 	end
 	
