@@ -43,7 +43,7 @@ module lab5 #(parameter [22:0] MODEL_NUMBER = 1350364, parameter DMEM_ADDRESS_WI
 	DataMemory #(.MODEL_NUMBER(MODEL_NUMBER), .DMEM_ADDRESS_WIDTH(DMEM_ADDRESS_WIDTH)) dmem
 		(.address, .data_in, .bytemask, .write, .start_access, .access_done, .data_out, .clk, .reset);
 	
-	always @(posedge clk)
+	always @(posedge clk) 
 		assert(reset !== 0 || start_access == 0 || address[2:0] == 0); // All accesses must be aligned.
 	
 endmodule
@@ -52,6 +52,8 @@ endmodule
 
 module lab5_testbench ();
 	localparam USERID = 2335689;  // Set to your student ID #
+	//localparam USERID = 0;  // Set to your student ID #
+
 	localparam ADDRESS_WIDTH = 20;
 	localparam DATA_WIDTH = 8;
 	
@@ -352,153 +354,22 @@ logic l2_block_size_found = 0;
 //		$display("=== DETERMINING L2 BLOCK SIZE ===");
 
 
-$display("=== DETERMINING L2 BLOCK SIZE ===");
-
-// Step 1: Fill L1 cache completely to force evictions to L2
-$display("Step 1: Filling L1 cache...");
-for (i = 0; i < 8; i++) begin  // 8 blocks in L1 cache
-    addr = i * 16;  // 16-byte block size for L1
-    readMem(addr, dummy_data, delay);
-    $display("Loaded L1 block %d (addr %d): %d cycles", i, addr, delay);
-end
-
-// Step 2: Read a new block that will evict block 0 from L1 to L2
-$display("Step 2: Evicting block 0 from L1...");
-addr = 8 * 16;  // Block 8 maps to same L1 index as block 0
-readMem(addr, dummy_data, delay);
-$display("Read block 8 (addr %d): %d cycles - should evict block 0", addr, delay);
-
-// Step 3: Now block 0 is only in L2. Test sequential addresses to find L2 block boundaries
-$display("Step 3: Testing L2 block size...");
-
-
-// First, establish what different access times mean:
-// L1 hit: ~5 cycles
-// L2 hit (L1 miss): L1_miss_time + L2_hit_time (~19 cycles total)
-// L2 miss: L1_miss_time + L2_miss_time + Main_memory_time (~83 cycles total)
-
-// Read address 0 first - this should be L2 hit (L1 miss + L2 hit = ~19 cycles)
-readMem(0, dummy_data, delay);
-$display("Read addr 0 (should be L2 hit): %d cycles", delay);
-
-// Test at L1 block boundaries first (addresses 16, 32, 48...)
-// since L2 blocks must be >= L1 block size
-for (i = 1; i <= 16; i++) begin  // Test up to 256 bytes
-    addr = i * 16;  // Test addresses 16, 32, 48, 64, ... (L1 block boundaries)
-    readMem(addr, dummy_data, delay);
-    $display("Read addr %d: %d cycles", addr, delay);
-    
-    if (delay == l2_hit_total_cycles) begin
-        // Same total time = L2 hit (same L2 block as addr 0)
-        l2_block_size_bytes = (i + 1) * 16;
-        $display("  -> L2 HIT: block size >= %d bytes", l2_block_size_bytes);
-    end else if (delay > l2_hit_total_cycles) begin
-        // Much longer time = L2 miss, went to main memory
-        $display("  -> L2 MISS: block boundary found at %d bytes", l2_block_size_bytes);
-        l2_block_size_found = 1;
-        break;
-    end else begin
-        // Shorter time = L1 hit (shouldn't happen in this test, but handle it)
-        $display("  -> Unexpected L1 HIT at addr %d", addr);
-    end
-end
-
-$display("=== L2 BLOCK SIZE RESULT ===");
-if (l2_block_size_found) begin
-    $display("L2 block size: %d bytes", l2_block_size_bytes);
-end else begin
-    $display("L2 block size: >= %d bytes (may be larger)", l2_block_size_bytes);
-end
-
-// Alternative method: Test with larger jumps if needed
-if (!l2_block_size_found) begin
-    $display("Testing larger block sizes...");
-    
-    // Reset and try with bigger jumps
-    resetMem();
-    
-    // Fill L1 again
-    for (i = 0; i < 8; i++) begin
-        addr = i * 16;
-        readMem(addr, dummy_data, delay);
-    end
-    
-    // Evict block 0 again
-    readMem(8 * 16, dummy_data, delay);
-    
-    // Test with 64-byte jumps (multiples of L1 block size)
-    readMem(0, dummy_data, delay);
-    l2_hit_total_cycles = delay;
-    
-    for (i = 1; i <= 8; i++) begin  // Test 64, 128, 192, 256, 320, 384, 448, 512
-        addr = i * 64;
-        readMem(addr, dummy_data, delay);
-        $display("Read addr %d: %d cycles", addr, delay);
-        
-        if (delay > l2_hit_total_cycles) begin
-            l2_block_size_bytes = i * 64;
-            $display("L2 block size found: %d bytes", l2_block_size_bytes);
-            break;
-        end
-    end
-end
-
-
-// Find L2 cache size - assuming 16 byte block size
-$display("=== FINDING L2 CACHE SIZE ===");
-
-// Strategy: Fill L1 completely, then read enough data to fill L2.
-// When L2 is full, previously cached data gets evicted to main memory.
-// We detect this by seeing when a previously fast access becomes slow.
-
-// Step 1: Fill L1 cache completely (8 blocks × 16 bytes = 128 bytes)
-$display("Step 1: Filling L1 cache...");
-for (i = 0; i < 8; i++) begin
-    addr = i * 16;  // Addresses 0, 16, 32, 48, 64, 80, 96, 112
-    readMem(addr, dummy_data, delay);
-    $display("Loaded L1 block %d (addr %d): %d cycles", i, addr, delay);
-end
-
-// Step 2: Force address 0 to be evicted from L1 to L2 only
-$display("Step 2: Evicting address 0 from L1 to L2...");
-addr = 8 * 16;  // Address 128 - maps to same L1 index as address 0
-readMem(addr, dummy_data, delay);
-$display("Read addr %d: %d cycles (evicts addr 0 to L2)", addr, delay);
-
-// Step 3: Verify address 0 is in L2 (should be medium delay ~19 cycles)
-readMem(0, dummy_data, delay);
-$display("Read addr 0: %d cycles (should be L2 hit)", delay);
-
-// Step 4: Read sequential blocks to fill L2 cache
-// Keep checking if address 0 is still in L2 or gets evicted to main memory
-$display("Step 3: Testing L2 capacity...");
-
-for (i = 1; i <= 8192; i++) begin  // Test up to 64 blocks (1024 bytes)
-    // Read a new block that will consume L2 capacity
-    addr = (8 + i) * 16;  // Addresses 144, 160, 176, 192, ...
-    readMem(addr, dummy_data, delay);
-    $display("Read addr %d: %d cycles", addr, delay);
-    
-    // Keep L1 full by reading the most recent 8 blocks
-    // This prevents address 0 from being pulled back into L1
-    for (j = 0; j < 8; j++) begin
-        readMem((8 + i - 7 + j) * 16, dummy_data, delay);
-    end
-    
-    // Now check if address 0 is still in L2
-    readMem(0, dummy_data, delay);
-    $display("  Check addr 0: %d cycles", delay);
-    
-    if (delay > 50) begin  // If > 50 cycles, it's been evicted to main memory
-        $display("  -> L2 CACHE FULL! Address 0 evicted after reading %d blocks", i);
-        $display("  -> L2 cache size: %d bytes", i * 16);
-        break;
-    end else begin
-        $display("  -> Address 0 still in L2 (cache size > %d bytes)", i * 16);
-    end
-end
-		
-		
+		// fill L1
+		// read 128 (one more than L1)
+		$display("TESTING L2 SIZE");
+		for (j = 0; j < 1024; j++) begin
+		for (i = 8 * j; i < 8*(j+1);i++) begin
+			addr = i  * 16;
+			readMem(addr, dummy_data, delay);
+			$display("%t Reading address %d took %d cycles", $time, addr, delay);
+		end
+		readMem('0, dummy_data, delay);
+		$display("%t Reading address %d took %d cycles", $time, 0, delay);
+		if(delay > 50 && j !=0) begin
+				$display("BITCH");
+				$stop();
+		end
+		end
 		$stop();
 	end
 	
