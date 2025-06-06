@@ -245,8 +245,11 @@ module lab5_testbench ();
 int l2_hit_total_cycles = delay;
 int l2_block_size_bytes = 16;  // Start with L1 block size (minimum possible for L2)
 logic l2_block_size_found = 0;
-		
-	
+
+int addr1 = 0;
+	int	addr2 = 256;
+		int addr3 = 512;
+	integer addrs[0:4];
 	// actual testing here
 	initial begin
 		dummy_data <= '0;
@@ -357,15 +360,138 @@ logic l2_block_size_found = 0;
 		// fill L1
 		// read 128 (one more than L1)
 		$display("TESTING L2 SIZE");
-		for (j = 0; j < 1; j++) begin
+		j=0;
 		for (i = 8 * j; i < 8*(j+1);i++) begin
 			addr = i  * 16;
 			readMem(addr, dummy_data, delay);
 			$display("%t Reading address %d took %d cycles", $time, addr, delay);
 		end
+		j=1;
+		for (i = 8 * j; i < 8*(j+1);i++) begin
+			addr = i  * 16;
+			readMem(addr, dummy_data, delay);
+			$display("%t Reading address %d took %d cycles", $time, addr, delay);
+		end
+		j=2;
+		for (i = 8 * j; i < 8*(j+1);i++) begin
+			addr = i  * 16;
+			readMem(addr, dummy_data, delay);
+			$display("%t Reading address %d took %d cycles", $time, addr, delay);
+		end
+		j=3;
+		for (i = 8 * j; i < 8*(j+1);i++) begin
+			addr = i  * 16;
+			readMem(addr, dummy_data, delay);
+			$display("%t Reading address %d took %d cycles", $time, addr, delay);
+		end
+j=4;
+		for (i = 8 * j; i < 8*(j+1);i++) begin
+			addr = i  * 16;
+			readMem(addr, dummy_data, delay);
+			$display("%t Reading address %d took %d cycles", $time, addr, delay);
+readMem('0, dummy_data, delay);
+		$display("%t Reading address %d took %d cycles", $time, 0, delay);
 		end
 		readMem('0, dummy_data, delay);
 		$display("%t Reading address %d took %d cycles", $time, 0, delay);
+		
+		resetMem();
+		
+		$display("2 way");
+		addr1 = 0;
+		addr2 = 256;
+		addr3 = 512;
+		readMem(addr1, dummy_data, delay);
+		readMem(addr2, dummy_data, delay);
+		readMem(addr3, dummy_data, delay);		
+		readMem('d128, dummy_data, delay);
+		readMem('d384, dummy_data, delay);
+		readMem(addr1, dummy_data, delay);
+		$display("%t Reading address %d took %d cycles", $time, 0, delay);
+
+
+		resetMem();
+		
+		// Verify 4-way associativity
+$display("Verifying 4-way associativity");
+// Access 5 addresses that map to set 0
+addrs = {0, 128, 256, 384, 512}; // All map to set 0
+for (i = 0; i < 5; i++) begin
+    readMem(addrs[i], dummy_data, delay);
+end
+// Check if first address (0) was evicted
+readMem(0, dummy_data, delay);
+if (delay > 50) begin
+    $display("Confirmed: 4-way associative (address 0 evicted)");
+end
+
+resetMem();
+
+$display("TESTING L1 WRITE POLICY");
+
+// Test write-through: writes should always go to L2
+addr = 0;  // Address not in cache
+// First read to bring into L1
+readMem(addr, dummy_data, delay);
+$display("Initial read delay: %d", delay);
+
+addr = 128;
+readMem(addr, dummy_data, delay);
+$display("Second read delay: %d", delay);
+
+// Now write to same address
+writeMem(addr, dummy_data,8'hFF, delay);
+$display("Write delay: %d", delay);
+
+// Write-through: write delay should be similar to L2 access time
+// Write-back: write delay should be similar to L1 hit time
+if (delay < 10) begin
+    $display("Likely WRITE-BACK policy (fast write)");
+end else begin
+    $display("Likely WRITE-THROUGH policy (slow write to L2)");
+end
+
+resetMem();
+
+
+		$display("TESTING WRITE BUFFER");
+
+addr1 = 0;   // L1 miss address
+readMem(addr1, dummy_data, delay);
+$display("Second read delay: %d", delay);
+// Method 1: Write then immediate read to L2
+writeMem(addr1, dummy_data,8'hFF, delay);
+$display("Write to addr1 delay: %d", delay);
+
+// Immediately try to access L2 (different address)
+readMem(addr1, dummy_data, delay);
+$display("Immediate L2 read delay: %d", delay);
+readMem(addr1 + 8, dummy_data, delay);    
+$display("Immediate L2 read delay: %d", delay);
+
+// If write buffer exists:
+// - Write should complete quickly (buffered)
+// - Subsequent L2 access should be slower (blocked by pending write)
+resetMem();
+
+
+$display("TESTING WRITE BUFFER BLOCKING");
+// Write to L1 miss (should use write buffer if available)
+  $display("Write delay: %d", delay);
+
+
+// Immediately read from L2 (should block if write buffer is draining)
+readMem(addr*2, dummy_data, delay);
+$display("Read delay: %d", delay);
+
+// Pattern analysis:
+// With write buffer: write_delay < L2_access_time, read_delay >= L2_access_time
+// Without write buffer: write_delay >= L2_access_time
+
+
+resetMem();
+
+
 		$stop();
 	end
 	
